@@ -28,10 +28,10 @@ export class PostCreateComponent {
         alert('Form has been submitted sucessfully!')
     }
 
-    clearForm(){
+    clearForm() {
         this.enteredTitle = '',
-        this.enteredContent = '',
-        this.enteredImagePath = ''
+            this.enteredContent = '',
+            this.enteredImagePath = ''
     }
 
 }

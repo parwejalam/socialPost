@@ -2,11 +2,11 @@ import { Component, Input, viewChild } from "@angular/core";
 import { MaterialModule, } from "../../module/material/material.module";
 import { MatAccordion } from "@angular/material/expansion";
 
-interface  post {
-        title: string;
-        content?: string;
-        imagePath?: string;
-    }
+interface post {
+    title: string;
+    content?: string;
+    imagePath?: string;
+}
 
 @Component({
     selector: "app-post-list",
@@ -27,7 +27,7 @@ export class PostListComponent {
         this.accordion().closeAll();
         this.expandAll = false;
     }
-    
-    @Input() postList: post[]  = [];
+
+    @Input() postList: post[] = [];
 
 }

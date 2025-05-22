@@ -12,7 +12,7 @@ interface post {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [PostCreateComponent, PostListComponent,MatCardModule],
+  imports: [PostCreateComponent, PostListComponent, MatCardModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -20,7 +20,7 @@ export class AppComponent {
   title = 'socialPost';
   year = new Date().getFullYear();
   posts: post[] = [];
-  onPostCreated(post:post){
+  onPostCreated(post: post) {
     this.posts.push(post);
     console.log(this.posts);
   }
