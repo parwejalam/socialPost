@@ -1,0 +1,16 @@
+<section class="create-post">
+  <mat-card>
+    <mat-form-field>
+      <mat-label>Title</mat-label>
+      <input matInput placeholder="Enter post title" [(ngModel)]="enteredTitle" />
+    </mat-form-field>
+    <mat-form-field>
+      <textarea matInput rows="6" placeholder="What's on your mind?" [(ngModel)]="enteredContent"></textarea>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Image URL</mat-label>
+      <input matInput placeholder="Enter image URL" [(ngModel)]="enteredImagePath" />
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="onAddPost()">Post</button>
+  </mat-card>
+</section>

@@ -12,30 +12,13 @@
   </header>
 
   <main>
-    <section class="create-post">
       <h2>Create a Post</h2>
-      <form>
-        <textarea placeholder="What's on your mind?"></textarea>
-        <button type="submit">Post</button>
-      </form>
-    </section>
-
-    <section class="posts">
-      <h2>Recent Posts</h2>
-      <div class="post">
-        <h3>User Name</h3>
-        <p>This is a sample post content.</p>
-        <div class="actions">
-          <button>Like</button>
-          <button>Comment</button>
-          <button>Share</button>
-        </div>
-      </div>
-      <!-- Add more posts here -->
-    </section>
+      <app-post-create (postCreated)="onPostCreated($event)"></app-post-create>
+       <h2>Recent Posts</h2>
+      <app-post-list [postList]="posts"></app-post-list>
   </main>
 
   <footer>
-    <p>&copy; 2023 Social Media App</p>
+    <p>&copy; {{year}} Social Media App</p>
   </footer>
 </div>
