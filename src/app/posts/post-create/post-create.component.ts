@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from "@angular/core";
 import { MaterialModule } from "../../module/material/material.module";
 import { FormsModule, NgForm } from "@angular/forms";
-import { PostsService } from "../../posts.service";
+import { PostsService } from "../../services/posts.service";
 import { Post } from "../../model/post.model";
 
 @Component({

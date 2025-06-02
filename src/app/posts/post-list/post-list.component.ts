@@ -1,7 +1,7 @@
 import { Component, Input, viewChild } from "@angular/core";
 import { MaterialModule, } from "../../module/material/material.module";
 import { MatAccordion } from "@angular/material/expansion";
-import { PostsService } from "../../posts.service";
+import { PostsService } from "../../services/posts.service";
 import { Post } from "../../model/post.model";
 import { Subscription } from "rxjs";
 
