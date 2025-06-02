@@ -12,10 +12,10 @@
   <mat-card>
     <h4>User Name</h4>
     
-    @if(expandAll && postList.length > 0){
+    @if(!expandAll && postList.length > 0){
     <button mat-button (click)="openAll()">Expand All</button>
     }
-    @if(!expandAll && postList.length > 0){
+    @if(expandAll && postList.length > 0){
     <button mat-button *ngIf="expandAll" (click)="closeAll()">Collapse All</button>
     }
     @if(postList.length > 0) {
@@ -26,10 +26,11 @@
           <mat-panel-title>{{post.title}} </mat-panel-title>
           @if(post.content){
           <mat-panel-description>
-            {{post.content}}
+            <!-- {{post.content}} -->
           </mat-panel-description>
           }
         </mat-expansion-panel-header>
+          {{post.content}}
         <div class='actions'>
           <button>Like</button>
           <button>Comment</button>

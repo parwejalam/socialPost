@@ -1,12 +1,10 @@
 import { Component, Input, viewChild } from "@angular/core";
 import { MaterialModule, } from "../../module/material/material.module";
 import { MatAccordion } from "@angular/material/expansion";
+import { PostsService } from "../../posts.service";
+import { Post } from "../../model/post.model";
+import { Subscription } from "rxjs";
 
-interface post {
-    title: string;
-    content?: string;
-    imagePath?: string;
-}
 
 @Component({
     selector: "app-post-list",
@@ -18,7 +16,12 @@ interface post {
 export class PostListComponent {
     accordion = viewChild.required(MatAccordion);
     expandAll = false;
-
+    postList: Post[] = [];
+    private postsSub!: Subscription;
+    
+    constructor(public postService: PostsService) {
+        this.postService.loadPosts();
+    }
     openAll() {
         this.accordion().openAll();
         this.expandAll = true;
@@ -28,6 +31,14 @@ export class PostListComponent {
         this.expandAll = false;
     }
 
-    @Input() postList: post[] = [];
+    ngOnInit() {
+        this.postList = this.postService.getPosts();
+        this.postsSub = this.postService.getPostsUpdatedListener().subscribe((posts: Post[]) => {
+            this.postList = posts;
+        });
+    }
 
+    ngOnDestroy() {
+        this.postsSub.unsubscribe()
+    }
 }

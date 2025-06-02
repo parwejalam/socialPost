@@ -19,9 +19,9 @@ interface post {
 export class AppComponent {
   title = 'socialPost';
   year = new Date().getFullYear();
-  posts: post[] = [];
-  onPostCreated(post: post) {
-    this.posts.push(post);
-    console.log(this.posts);
-  }
+  // posts: post[] = [];
+  // onPostCreated(post: post) {
+  //   this.posts.push(post);
+  //   console.log(this.posts);
+  // }
 }

@@ -1,37 +1,32 @@
 import { Component, EventEmitter, Output } from "@angular/core";
 import { MaterialModule } from "../../module/material/material.module";
+import { FormsModule, NgForm } from "@angular/forms";
+import { PostsService } from "../../posts.service";
+import { Post } from "../../model/post.model";
 
 @Component({
     selector: "app-post-create",
     standalone: true,
-    imports: [MaterialModule],
+    imports: [MaterialModule, FormsModule],
     templateUrl: "./post-create.component.html",
     styleUrls: ["./post-create.component.scss"],
 })
 export class PostCreateComponent {
-    enteredTitle = "";
-    enteredContent = "";
-    enteredImagePath = "";
-    @Output() postCreated = new EventEmitter<{
-        title: string;
-        content: string;
-        imagePath: string;
-    }>();
-    onAddPost() {
-        const post = {
-            title: this.enteredTitle,
-            content: this.enteredContent,
-            imagePath: this.enteredImagePath,
+
+    constructor(public postService: PostsService) {}
+    // @Output() postCreated = new EventEmitter<{
+    //     title: string;
+    //     content: string;
+    //     imagePath: string;
+    // }>();
+    onAddPost(form: NgForm) {
+        const post: Post = {
+            title: form.value.title ?? "",
+            content: form.value.content ?? "",
+            imagePath: form.value.imagePath ?? "",
         };
-        this.postCreated.emit(post);
-        this.clearForm();
-        alert('Form has been submitted sucessfully!')
+        // this.postCreated.emit(post);
+        this.postService.addPost(post);
+        form.resetForm();
     }
-
-    clearForm() {
-        this.enteredTitle = '',
-            this.enteredContent = '',
-            this.enteredImagePath = ''
-    }
-
 }

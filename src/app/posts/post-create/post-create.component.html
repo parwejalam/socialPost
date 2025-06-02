@@ -1,16 +1,23 @@
 <section class="create-post">
   <mat-card>
-    <mat-form-field>
-      <mat-label>Title</mat-label>
-      <input matInput placeholder="Enter post title" [(ngModel)]="enteredTitle" />
-    </mat-form-field>
-    <mat-form-field>
-      <textarea matInput rows="6" placeholder="What's on your mind?" [(ngModel)]="enteredContent"></textarea>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Image URL</mat-label>
-      <input matInput placeholder="Enter image URL" [(ngModel)]="enteredImagePath" />
-    </mat-form-field>
-    <button mat-raised-button color="primary" (click)="onAddPost()">Post</button>
+    <form #postForm="ngForm" (ngSubmit)="onAddPost(postForm)" >
+      <mat-form-field>
+        <mat-label>Title</mat-label>
+        <input matInput placeholder="Enter post title" name="title" ngModel required #title="ngModel"/>
+        <mat-error *ngIf="title.invalid">Please add title.</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <textarea matInput rows="6" placeholder="What's on your mind?" name="content" ngModel required #textArea="ngModel"></textarea>
+        <mat-error *ngIf="textArea.invalid">Please add some text.</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Image URL</mat-label>
+        <input matInput placeholder="Enter image URL" name="imagePath" ngModel />
+      </mat-form-field>
+      @if(postForm.valid) {
+      <button  mat-raised-button color="primary" type="submit" >Post</button>
+      }
+    </form>
+
   </mat-card>
 </section>
