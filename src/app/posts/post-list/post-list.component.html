@@ -8,10 +8,10 @@
       <button>Share</button>
     </div>
   </div> -->
-
+  <h2 class="info-text">Recent Posts</h2>
   <mat-card>
-    <h4>User Name</h4>
-    
+    <!-- <h4>User Name</h4> -->
+
     @if(!expandAll && postList.length > 0){
     <button mat-button (click)="openAll()">Expand All</button>
     }
@@ -30,18 +30,17 @@
           </mat-panel-description>
           }
         </mat-expansion-panel-header>
-          {{post.content}}
-        <div class='actions'>
-          <button>Like</button>
-          <button>Comment</button>
-          <button>Share</button>
-        </div>
+        {{post.content}}
+        <mat-action-row>
+          <button mat-button color="primary">Edit</button>
+          <button mat-button color="warn">Delet</button>
+          <!-- <button>Share</button> -->
+        </mat-action-row>
       </mat-expansion-panel>
       }
     </mat-accordion>
     }
-    @if(postList.length <= 0) {
-    <p class='info-text mat-body'>No posts added yet!</p>
-    }
+    @if(postList.length <= 0) { <p class='info-text mat-body'>No posts added yet!</p>
+      }
   </mat-card>
 </section>
