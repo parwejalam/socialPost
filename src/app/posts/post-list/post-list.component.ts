@@ -18,7 +18,7 @@ export class PostListComponent {
     expandAll = false;
     postList: Post[] = [];
     private postsSub!: Subscription;
-    
+
     constructor(public postService: PostsService) {
         this.postService.loadPosts();
     }
@@ -32,7 +32,7 @@ export class PostListComponent {
     }
 
     ngOnInit() {
-        this.postList = this.postService.getPosts();
+        this.postService.getPosts();
         this.postsSub = this.postService.getPostsUpdatedListener().subscribe((posts: Post[]) => {
             this.postList = posts;
         });

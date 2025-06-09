@@ -21,6 +21,7 @@ export class PostCreateComponent {
     // }>();
     onAddPost(form: NgForm) {
         const post: Post = {
+            id: Math.random().toString(), // Generate a random ID for the post
             title: form.value.title ?? "",
             content: form.value.content ?? "",
             imagePath: form.value.imagePath ?? "",
