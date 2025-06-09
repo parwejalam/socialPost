@@ -18,26 +18,35 @@ export class PostsService {
     getPosts() {
         // return [...this.posts]; // Return a copy of the posts array
         let post = this.http.get<{ message: string, posts: Post[] }>('http://localhost:3000/api/get').subscribe((response) => {
-            if(response.posts.length !== 0) {
-            this.posts = response.posts;
-            localStorage.setItem("posts", JSON.stringify(this.posts));
-            this.postsUpdated.next([...this.posts]); // Notify subscribers with a copy of the updated posts
-            }else {
+            if (response.posts.length !== 0) {
+                this.posts = response.posts;
+                localStorage.setItem("posts", JSON.stringify(this.posts));
+                this.postsUpdated.next([...this.posts]); // Notify subscribers with a copy of the updated posts
+            } else {
                 console.log("No posts found");
             }
         })
         return post; // Return the observable directly
     }
 
+    addPost(post: Post) {
+        this.http.post<{ message: string }>('http://localhost:3000/api/posts', post).subscribe((response) => {
+            console.log(response.message);
+            localStorage.setItem("posts", JSON.stringify(post));
+            this.posts.push(post); // Add the new post to the local posts array
+            this.postsUpdated.next([...this.posts]);
+        });
+    }
+
     getPostsUpdatedListener() {
         return this.postsUpdated.asObservable(); // Return an observable to listen for updates
     }
 
-    addPost(post: Post) {
-        this.posts.push(post);
-        localStorage.setItem("posts", JSON.stringify(this.posts));
-        this.postsUpdated.next([...this.posts]); // Notify subscribers with a copy of the updated posts
-    }
+    // addPost(post: Post) {
+    //     this.posts.push(post);
+    //     localStorage.setItem("posts", JSON.stringify(this.posts));
+    //     this.postsUpdated.next([...this.posts]); // Notify subscribers with a copy of the updated posts
+    // }
 
     loadPosts() {
         const storedPosts = localStorage.getItem("posts");

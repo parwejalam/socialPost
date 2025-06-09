@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const bodyParser = require('body-parser');
 
 // app.use((req, res, next) => {
 //     res.header('Access-Control-Allow-Origin', '*');
@@ -9,10 +10,10 @@ const cors = require('cors');
 //     next();
 // });
 
+app.use(bodyParser.json());
 app.use(cors());
 
-
-posts = [
+const posts = [
     { id: '1', title: 'First Post', content: 'This is the first post!' },
     { id: '2', title: 'Second Post', content: 'This is the second post!' },
     { id: '3', title: 'Third Post', content: 'This is the third post!' }
@@ -21,20 +22,14 @@ posts = [
 
 app.post('/api/posts', (req, res, next) => {
     const post = req.body;
-    const newPost = {
-        id: Date.now().toString(),
-        title: post.title,
-        content: post.content
-    };
-    this.posts.push(newPost);
+    posts.push(post);
+    console.log(post);
     res.status(201).json({
         message: 'Post added successfully!',
-        post: newPost
     });
 });
 
-
-app.use('/api/get', (req, res, next) => {
+app.get('/api/get', (req, res, next) => {
     this.posts
     res.status(200).json({
         message: 'Posts fetched successfully!',

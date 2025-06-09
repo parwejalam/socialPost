@@ -20,10 +20,10 @@
     }
     @if(postList.length > 0) {
     <mat-accordion class='example-headers-align' multi>
-      @for(post of postList; track post.title ){
+      @for(post of postList;track post.title ){
       <mat-expansion-panel>
         <mat-expansion-panel-header>
-          <mat-panel-title>{{post.title}} </mat-panel-title>
+          <mat-panel-title> {{post.id}} {{post.title}} </mat-panel-title>
           @if(post.content){
           <mat-panel-description>
             <!-- {{post.content}} -->
