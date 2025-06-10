@@ -26,14 +26,14 @@
           <mat-panel-title>{{post.title}} </mat-panel-title>
           @if(post.content){
           <mat-panel-description>
-            <!-- {{post.content}} -->
+            <!-- {{post.desc}} -->
           </mat-panel-description>
           }
         </mat-expansion-panel-header>
         {{post.content}}
         <mat-action-row>
           <button mat-button color="primary">Edit</button>
-          <button mat-button color="warn">Delet</button>
+          <button mat-button color="warn" (click)="deletPost(post.id)">Delet</button>
         </mat-action-row>
       </mat-expansion-panel>
       }

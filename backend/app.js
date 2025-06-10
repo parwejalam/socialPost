@@ -31,6 +31,12 @@ app.post('/api/posts', (req, res, next) => {
     console.log(post);
     res.status(201).json({
         message: 'Post added successfully!',
+        post: {
+            id: post._id,
+            title: post.title,
+            content: post.content,
+            imagePath: post.imagePath
+        }
     });
 });
 
@@ -55,6 +61,31 @@ app.get('/api/posts', (req, res, next) => {
         });
     });
 })
+
+
+app.delete("/api/posts/:id", (req, res) => {
+    // Basic validation of the ID
+    if (!req.params.id || !mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return res.status(400).json({ message: 'Invalid post ID' });
+    }
+
+    //delete the post by ID
+    Post.deleteOne({ _id: req.params.id }).then(result => {
+        if (result.deletedCount === 0) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+        console.log("Post deleted successfully");
+        res.status(200).json({
+            message: 'Post deleted successfully!'
+        });
+    }).catch(error => {
+        console.error('Error deleting post:', error);
+        res.status(500).json({
+            message: 'Deleting post failed!',
+            error: error.message // Send only the error message for security
+        });
+    });
+});
 
 
 module.exports = app;

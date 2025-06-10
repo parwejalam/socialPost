@@ -20,8 +20,8 @@ export class PostCreateComponent {
     //     imagePath: string;
     // }>();
     onAddPost(form: NgForm) {
-        const post: Post = {
-            // id: "", 
+        const post: Post= {
+            id:'',
             title: form.value.title ?? "",
             content: form.value.content ?? "",
             imagePath: form.value.imagePath ?? "",

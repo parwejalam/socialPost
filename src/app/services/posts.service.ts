@@ -37,15 +37,19 @@ export class PostsService {
         });
     }
 
+    deletePost(postId: string) {
+        this.http.delete('http://localhost:3000/api/posts/'+ postId).subscribe(() => {
+            this.posts = this.posts.filter(post => post.id !== postId); // Remove the deleted post from the local posts array
+            localStorage.setItem("posts", JSON.stringify(this.posts)); // Update local storage
+            this.postsUpdated.next([...this.posts]); // Notify subscribers with the updated posts
+        });
+        
+    }
+
     getPostsUpdatedListener() {
         return this.postsUpdated.asObservable(); // Return an observable to listen for updates
     }
 
-    // addPost(post: Post) {
-    //     this.posts.push(post);
-    //     localStorage.setItem("posts", JSON.stringify(this.posts));
-    //     this.postsUpdated.next([...this.posts]); // Notify subscribers with a copy of the updated posts
-    // }
 
     loadPosts() {
         const storedPosts = localStorage.getItem("posts");
