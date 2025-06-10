@@ -23,7 +23,7 @@
       @for(post of postList;track post.title ){
       <mat-expansion-panel>
         <mat-expansion-panel-header>
-          <mat-panel-title> {{post.id}} {{post.title}} </mat-panel-title>
+          <mat-panel-title>{{post.title}} </mat-panel-title>
           @if(post.content){
           <mat-panel-description>
             <!-- {{post.content}} -->
@@ -34,7 +34,6 @@
         <mat-action-row>
           <button mat-button color="primary">Edit</button>
           <button mat-button color="warn">Delet</button>
-          <!-- <button>Share</button> -->
         </mat-action-row>
       </mat-expansion-panel>
       }

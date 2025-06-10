@@ -2,7 +2,6 @@ import { inject, Injectable } from "@angular/core";
 import { Post } from '../model/post.model';
 import { Subject } from "rxjs";
 import { HttpClient } from "@angular/common/http";
-import e from "cors";
 
 
 @Injectable({ providedIn: 'root' })
@@ -17,7 +16,7 @@ export class PostsService {
 
     getPosts() {
         // return [...this.posts]; // Return a copy of the posts array
-        let post = this.http.get<{ message: string, posts: Post[] }>('http://localhost:3000/api/get').subscribe((response) => {
+        let post = this.http.get<{ message: string, posts: Post[] }>('http://localhost:3000/api/posts').subscribe((response) => {
             if (response.posts.length !== 0) {
                 this.posts = response.posts;
                 localStorage.setItem("posts", JSON.stringify(this.posts));

@@ -13,7 +13,7 @@ import { Post } from "../../model/post.model";
 })
 export class PostCreateComponent {
 
-    constructor(public postService: PostsService) {}
+    constructor(public postService: PostsService) { }
     // @Output() postCreated = new EventEmitter<{
     //     title: string;
     //     content: string;
@@ -21,7 +21,7 @@ export class PostCreateComponent {
     // }>();
     onAddPost(form: NgForm) {
         const post: Post = {
-            id: Math.random().toString(), // Generate a random ID for the post
+            // id: "", 
             title: form.value.title ?? "",
             content: form.value.content ?? "",
             imagePath: form.value.imagePath ?? "",
