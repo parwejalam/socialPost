@@ -33,7 +33,7 @@ export class PostsService {
     addPost(post: Post) {
         this.http.post<{ message: string, post: Post }>('http://localhost:3000/api/posts', post).subscribe((response) => {
             console.log(response.message);
-            post.id = response.post.id; // Assuming the server returns the new post ID in the response
+            post = response.post; // Assuming the server returns the new post ID in the response
             localStorage.setItem("posts", JSON.stringify([...this.posts, post]));
             this.posts.push(post);
             this.postsUpdated.next([...this.posts]);

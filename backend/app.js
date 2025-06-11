@@ -27,16 +27,23 @@ app.post('/api/posts', (req, res, next) => {
         content: req.body.content,
         imagePath: req.body.imagePath
     });
-    post.save()
-    console.log(post)
-    res.status(201).json({
-        message: 'Post added successfully!',
-        post: {
-            id: post._id,
-            title: post.title,
-            content: post.content,
-            imagePath: post.imagePath
-        }
+    post.save().then(createdPost =>{
+        console.log(createdPost)
+        res.status(201).json({
+            message: 'Post added successfully!',
+            post:{
+                id: createdPost._id,
+                title: createdPost.title,
+                content: createdPost.content,
+                imagePath: createdPost.imagePath
+            },
+        })
+    }).catch(error => {
+        console.error('Error saving post:', error);
+        res.status(500).json({
+            message: 'Creating post failed!',
+            error: error.message // Send only the error message for security
+        });
     });
 });
 
