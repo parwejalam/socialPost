@@ -15,9 +15,7 @@
         <mat-label>Image URL</mat-label>
         <input matInput placeholder="Enter image URL" name="imagePath" ngModel />
       </mat-form-field>
-      @if(postForm.valid) {
-      <button  mat-raised-button color="primary" type="submit" >Post</button>
-      }
+      <button mat-raised-button [color]="postForm.valid ? 'primary' : 'warn'" type="submit" [disabled]="!postForm.valid">Post</button>
     </form>
 
   </mat-card>

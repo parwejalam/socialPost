@@ -27,8 +27,8 @@ app.post('/api/posts', (req, res, next) => {
         content: req.body.content,
         imagePath: req.body.imagePath
     });
-    post.save();
-    console.log(post);
+    post.save()
+    console.log(post)
     res.status(201).json({
         message: 'Post added successfully!',
         post: {
