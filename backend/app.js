@@ -47,6 +47,48 @@ app.post('/api/posts', (req, res, next) => {
     });
 });
 
+// post request to add multiple records at once.
+app.post('/api/posts/bulk', (req, res) => {
+    const posts = Array.isArray(req.body) ? req.body : [req.body];
+    if (!Array.isArray(posts) || posts.length === 0) {
+        return res.status(400).json({ message: 'No posts provided' });
+    }
+
+    // Validate and map each post to match schema fields
+    const validPosts = posts
+        .filter(post => post.title && post.content) // basic validation
+        .map(post => ({
+            title: post.title,
+            content: post.content,
+            imagePath: post.imagePath || ''
+        }));
+
+    if (validPosts.length === 0) {
+        return res.status(400).json({ message: 'No valid posts provided' });
+    }
+
+    Post.insertMany(validPosts)
+        .then(createdPosts => {
+            res.status(201).json({
+                message: 'Posts added successfully!',
+                posts: createdPosts.map(post => ({
+                    id: post._id,
+                    title: post.title,
+                    content: post.content,
+                    imagePath: post.imagePath
+                }))
+            });
+        })
+        .catch(error => {
+            console.error('Error saving posts:', error);
+            res.status(500).json({
+                message: 'Creating posts failed!',
+                error: error.message
+            });
+        });
+});
+
+
 // get request to fetch all posts
 app.get('/api/posts', (req, res, next) => {
     Post.find().then(documents => {

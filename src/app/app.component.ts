@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { PostCreateComponent } from './posts/post-create/post-create.component';
-import { PostListComponent } from "./posts/post-list/post-list.component";
 import { MatCardModule } from '@angular/material/card';
+import { RouterModule } from '@angular/router';
 
 interface post {
   title: string;
@@ -12,7 +10,7 @@ interface post {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [PostCreateComponent, PostListComponent, MatCardModule],
+  imports: [MatCardModule, RouterModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

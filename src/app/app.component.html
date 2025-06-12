@@ -3,17 +3,16 @@
     <h1>Social Media App</h1>
     <nav>
       <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Profile</a></li>
-        <li><a href="#">Messages</a></li>
-        <li><a href="#">Settings</a></li>
+        <li><a routerLink="/">Home</a></li>
+        <li><a routerLink="/createPost">Add Post</a></li>
+        <!-- <li><a routerLink="">Messages</a></li>
+        <li><a routerLink="">Settings</a></li> -->
       </ul>
     </nav>
   </header>
 
   <main>
-    <app-post-create></app-post-create>
-    <app-post-list></app-post-list>
+    <router-outlet></router-outlet>
   </main>
 
   <footer>
