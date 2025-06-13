@@ -1,0 +1,10 @@
+<header>
+    <h1>Social Media App</h1>
+    <nav>
+        <ul>
+            @for( navLink of navLinks; track $index){
+            <li><a [routerLink]="navLink.routeraLink" routerLinkActive="mat-accent">{{navLink.Label}}</a></li>
+            }
+        </ul>
+    </nav>
+</header>

@@ -88,7 +88,6 @@ app.post('/api/posts/bulk', (req, res) => {
         });
 });
 
-
 // get request to fetch all posts
 app.get('/api/posts', (req, res, next) => {
     Post.find().then(documents => {

@@ -32,6 +32,7 @@ export class PostListComponent {
     }
 
     ngOnInit() {
+        this.postService.loadPosts();
         this.postService.getPosts();
         this.postsSub = this.postService.getPostsUpdatedListener().subscribe((posts: Post[]) => {
             this.postList = posts;

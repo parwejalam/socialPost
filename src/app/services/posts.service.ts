@@ -42,12 +42,12 @@ export class PostsService {
 
     // Method to Delete an existing post on the server and in the local posts array
     deletePost(postId: string) {
-        this.http.delete('http://localhost:3000/api/posts/'+ postId).subscribe(() => {
+        this.http.delete('http://localhost:3000/api/posts/' + postId).subscribe(() => {
             this.posts = this.posts.filter(post => post.id !== postId); // Remove the deleted post from the local posts array
             localStorage.setItem("posts", JSON.stringify(this.posts)); // Update local storage
             this.postsUpdated.next([...this.posts]); // Notify subscribers with the updated posts
         });
-        
+
     }
 
     // Method to get an observable that emits updates to the posts array
@@ -59,7 +59,8 @@ export class PostsService {
     loadPosts() {
         const storedPosts = localStorage.getItem("posts");
         if (storedPosts) {
-            this.posts = JSON.parse(storedPosts);
+            this.posts.push(JSON.parse(storedPosts));
+            return this.postsUpdated.next([...this.posts])
         }
     }
 
