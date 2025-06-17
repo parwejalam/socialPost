@@ -1,25 +1,26 @@
-import { Component, Input, viewChild } from "@angular/core";
+import { Component, Input, OnInit, viewChild } from "@angular/core";
 import { MaterialModule, } from "../../module/material/material.module";
 import { MatAccordion } from "@angular/material/expansion";
 import { PostsService } from "../../services/posts.service";
 import { Post } from "../../model/post.model";
 import { Subscription } from "rxjs";
+import { ActivatedRoute, Params, RouterModule } from "@angular/router";
 
 
 @Component({
     selector: "app-post-list",
     standalone: true,
-    imports: [MaterialModule],
+    imports: [MaterialModule, RouterModule],
     templateUrl: "./post-list.component.html",
     styleUrls: ["./post-list.component.scss"],
 })
-export class PostListComponent {
+export class PostListComponent implements OnInit {
     accordion = viewChild.required(MatAccordion);
     expandAll = false;
     postList: Post[] = [];
     private postsSub!: Subscription;
 
-    constructor(public postService: PostsService) {
+    constructor(public postService: PostsService, public route: ActivatedRoute) {
         this.postService.loadPosts();
     }
     openAll() {

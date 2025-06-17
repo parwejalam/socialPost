@@ -1,21 +1,23 @@
 <section class="create-post">
   <h2 class="info-text">Create a Post</h2>
   <mat-card>
-    <form #postForm="ngForm" (ngSubmit)="onAddPost(postForm)" >
+    <form #postForm="ngForm" (ngSubmit)="onSavePost(postForm)">
       <mat-form-field>
         <mat-label>Title</mat-label>
-        <input matInput placeholder="Enter post title" name="title" ngModel required #title="ngModel"/>
+        <input matInput placeholder="Enter post title" name="title" [ngModel]="post?.title" required #title="ngModel" />
         <mat-error *ngIf="title.invalid">Please add title.</mat-error>
       </mat-form-field>
       <mat-form-field>
-        <textarea matInput rows="6" placeholder="What's on your mind?" name="content" ngModel required #textArea="ngModel"></textarea>
+        <textarea matInput rows="6" placeholder="What's on your mind?" name="content" [ngModel]="post?.content" required
+          #textArea="ngModel"></textarea>
         <mat-error *ngIf="textArea.invalid">Please add some text.</mat-error>
       </mat-form-field>
       <mat-form-field>
         <mat-label>Image URL</mat-label>
-        <input matInput placeholder="Enter image URL" name="imagePath" ngModel />
+        <input matInput placeholder="Enter image URL" name="imagePath" [ngModel]="post?.imagePath" />
       </mat-form-field>
-      <button mat-raised-button [color]="postForm.valid ? 'primary' : 'warn'" type="submit" [disabled]="!postForm.valid">Post</button>
+      <button mat-raised-button [color]="postForm.valid ? 'primary' : 'warn'" type="submit"
+        [disabled]="!postForm.valid">Submit</button>
     </form>
 
   </mat-card>

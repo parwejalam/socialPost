@@ -5,5 +5,6 @@ import { PostCreateComponent } from './posts/post-create/post-create.component';
 
 export const routes: Routes = [
     { path: '', component: PostListComponent },
-    { path: 'createPost', component: PostCreateComponent }
+    { path: 'createPost', component: PostCreateComponent },
+    { path: 'edit/:postId', component: PostCreateComponent }
 ];

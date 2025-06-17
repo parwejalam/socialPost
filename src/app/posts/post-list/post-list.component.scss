@@ -7,7 +7,13 @@ mat-card {
         margin: 10px;
         background-color: #ffffff;
     }
+
+    a {
+        text-decoration: none;
+        color: #007bff;
+    }
 }
+
 
 mat-accordion {
     width: 80%;

@@ -29,6 +29,11 @@ export class PostsService {
         return post; // Return the observable directly
     }
 
+    // Method to get one post from the server
+    getPost(id: string) {
+        return { ...this.posts.find(p => p.id === id) }
+    }
+
     // Method to add a new post to the server and update the local posts array
     addPost(post: Post) {
         this.http.post<{ message: string, post: Post }>('http://localhost:3000/api/posts', post).subscribe((response) => {
@@ -38,6 +43,18 @@ export class PostsService {
             this.posts.push(post);
             this.postsUpdated.next([...this.posts]);
         });
+    }
+
+    //Method to update a post
+    updatePost(postId: string, post: Post) {
+        this.http.put('http://localhost:3000/api/posts/' + postId, post).subscribe((res => {
+            const updatedPosts = [...this.posts];
+            const oldPostIndex = updatedPosts.findIndex(p => p.id === post.id);
+            updatedPosts[oldPostIndex] = post
+            this.posts = updatedPosts; // Update the local posts array with the modified post
+            this.postsUpdated.next([...this.posts])
+        }))
+
     }
 
     // Method to Delete an existing post on the server and in the local posts array
