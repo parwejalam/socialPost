@@ -5,12 +5,13 @@ import { PostsService } from "../../services/posts.service";
 import { Post } from "../../model/post.model";
 import { Subscription } from "rxjs";
 import { ActivatedRoute, Params, RouterModule } from "@angular/router";
+import { LoaderComponent } from "../../loader/loader.component";
 
 
 @Component({
     selector: "app-post-list",
     standalone: true,
-    imports: [MaterialModule, RouterModule],
+    imports: [MaterialModule, RouterModule, LoaderComponent],
     templateUrl: "./post-list.component.html",
     styleUrls: ["./post-list.component.scss"],
 })
@@ -19,6 +20,7 @@ export class PostListComponent implements OnInit {
     expandAll = false;
     postList: Post[] = [];
     private postsSub!: Subscription;
+    isLoading = false;
 
     constructor(public postService: PostsService, public route: ActivatedRoute) {
         this.postService.loadPosts();
@@ -33,11 +35,13 @@ export class PostListComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.isLoading = true;
         this.postService.loadPosts();
         this.postService.getPosts();
         this.postsSub = this.postService.getPostsUpdatedListener().subscribe((posts: Post[]) => {
             this.postList = posts;
         });
+        this.isLoading = false;
     }
 
 

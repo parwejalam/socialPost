@@ -1,16 +1,9 @@
+@if(isLoading) {
+<app-loader></app-loader>
+} @else {
 <section class="posts">
-  <!-- <div class="post">
-    <h3>User Name</h3>
-    <p>This is a sample post content.</p>
-    <div class="actions">
-      <button>Like</button>
-      <button>Comment</button>
-      <button>Share</button>
-    </div>
-  </div> -->
   <h2 class="info-text">Recent Posts</h2>
   <mat-card>
-    <!-- <h4>User Name</h4> -->
 
     @if(!expandAll && postList.length > 0){
     <button mat-button (click)="openAll()">Expand All</button>
@@ -43,3 +36,4 @@
       }
   </mat-card>
 </section>
+}
