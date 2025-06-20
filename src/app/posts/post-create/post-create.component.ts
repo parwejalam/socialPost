@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from "@angular/core";
 import { MaterialModule } from "../../module/material/material.module";
-import { FormsModule, NgForm } from "@angular/forms";
+import { FormGroup, ReactiveFormsModule, FormControl, Validators } from "@angular/forms";
 import { PostsService } from "../../services/posts.service";
 import { Post } from "../../model/post.model";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
@@ -9,7 +9,7 @@ import { LoaderComponent } from "../../loader/loader.component";
 @Component({
     selector: "app-post-create",
     standalone: true,
-    imports: [MaterialModule, FormsModule, MaterialModule, LoaderComponent],
+    imports: [MaterialModule, ReactiveFormsModule, MaterialModule, LoaderComponent],
     templateUrl: "./post-create.component.html",
     styleUrls: ["./post-create.component.scss"],
 })
@@ -18,9 +18,15 @@ export class PostCreateComponent implements OnInit {
     private mode = 'create';
     private postId?: string;
     isLoading = false;
+    form!: FormGroup;
 
     constructor(public postService: PostsService, public route: ActivatedRoute, private router: Router) { }
     ngOnInit() {
+        this.form = new FormGroup({
+            title: new FormControl(null, { validators: [Validators.required, Validators.minLength(3)] }),
+            content: new FormControl(null, { validators: [Validators.required] }),
+            imagePath: new FormControl(null,)
+        });
         this.route.paramMap.subscribe((param: ParamMap) => {
             if (param.has('postId')) {
                 this.mode = 'edit';
@@ -34,6 +40,11 @@ export class PostCreateComponent implements OnInit {
                     content: postData.content ?? '',
                     imagePath: postData.imagePath ?? ''
                 };
+                this.form.setValue({
+                    title: this.post.title,
+                    content: this.post.content,
+                    imagePath: this.post.imagePath
+                });
             } else {
                 this.mode = 'create';
                 this.postId = '';
@@ -42,12 +53,12 @@ export class PostCreateComponent implements OnInit {
     }
 
 
-    onSavePost(form: NgForm) {
+    onSavePost() {
         const post: Post = {
             id: '',
-            title: form.value.title ?? "",
-            content: form.value.content ?? "",
-            imagePath: form.value.imagePath ?? "",
+            title: this.form.value.title,
+            content: this.form.value.content,
+            imagePath: this.form.value.imagePath
         };
         if (this.mode == 'create') {
             this.postService.addPost(post);
@@ -56,7 +67,7 @@ export class PostCreateComponent implements OnInit {
             this.postService.updatePost(this.postId, post)
             this.isLoading = false;
         }
-        form.resetForm();
+        this.form.reset()
         this.router.navigate(['/']);
     }
 }

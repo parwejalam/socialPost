@@ -1,26 +1,25 @@
 @if(isLoading) {
-  <app-loader></app-loader>
+<app-loader></app-loader>
 } @else {
 <section class="create-post">
   <h2 class="info-text">Create a Post</h2>
   <mat-card>
-    <form #postForm="ngForm" (ngSubmit)="onSavePost(postForm)">
+    <form [formGroup]="form" (ngSubmit)="onSavePost()">
       <mat-form-field>
         <mat-label>Title</mat-label>
-        <input matInput placeholder="Enter post title" name="title" [ngModel]="post?.title" required #title="ngModel" />
-        <mat-error *ngIf="title.invalid">Please add title.</mat-error>
+        <input matInput formControlName="title" placeholder="Enter post title" />
+        <mat-error *ngIf="form.get('title')invalid">Please add title.</mat-error>
       </mat-form-field>
       <mat-form-field>
-        <textarea matInput rows="6" placeholder="What's on your mind?" name="content" [ngModel]="post?.content" required
-          #textArea="ngModel"></textarea>
-        <mat-error *ngIf="textArea.invalid">Please add some text.</mat-error>
+        <textarea matInput rows="6" formControlName="content" placeholder="What's on your mind?"></textarea>
+        <mat-error *ngIf="form.get('content')invalid">Please add some text.</mat-error>
       </mat-form-field>
       <mat-form-field>
         <mat-label>Image URL</mat-label>
-        <input matInput placeholder="Enter image URL" name="imagePath" [ngModel]="post?.imagePath" />
+        <input matInput placeholder="Enter image URL" formControlName="imagePath" />
       </mat-form-field>
-      <button mat-raised-button [color]="postForm.valid ? 'primary' : 'warn'" type="submit"
-        [disabled]="!postForm.valid">Submit</button>
+      <button mat-raised-button [color]="form.valid ? 'primary' : 'warn'" type="submit"
+        [disabled]="!form.valid">Submit</button>
     </form>
 
   </mat-card>
