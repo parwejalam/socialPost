@@ -8,15 +8,26 @@
       <mat-form-field>
         <mat-label>Title</mat-label>
         <input matInput formControlName="title" placeholder="Enter post title" />
-        <mat-error *ngIf="form.get('title')invalid">Please add title.</mat-error>
-      </mat-form-field>
-      <mat-form-field>
+        @if(form.get('title')?.invalid){
+        <mat-error>Please add title.</mat-error>
+        }
+        </mat-form-field>
+        <div>
+          <button mat-storked-button type="button" (click)="filePicker.click()">Pick Image.</button>
+          <input type="file" #filePicker (change)="onPickedImage($event)" />
+        </div>
+        <div class="image-preview">
+          @if(imagePreview !== '' && imagePreview !== null) {
+          <img [src]="imagePreview" alt="Image Preview" />
+          } @else {
+          <p>Please pick an image.</p>
+          }
+        </div>
+        <mat-form-field>
         <textarea matInput rows="6" formControlName="content" placeholder="What's on your mind?"></textarea>
-        <mat-error *ngIf="form.get('content')invalid">Please add some text.</mat-error>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Image URL</mat-label>
-        <input matInput placeholder="Enter image URL" formControlName="imagePath" />
+        @if(form.get('content')?.invalid){
+        <mat-error>Please add some text.</mat-error>
+        }
       </mat-form-field>
       <button mat-raised-button [color]="form.valid ? 'primary' : 'warn'" type="submit"
         [disabled]="!form.valid">Submit</button>

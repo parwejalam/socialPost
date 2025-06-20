@@ -41,6 +41,21 @@ mat-card {
         }
     }
 }
+
 .info-text {
     text-align: center;
+}
+
+input[type="file"] {
+    display: none;
+    // visibility: hidden;
+}
+
+.image-preview {
+    height: 5rem;
+    margin: 1rem 1rem;
+}
+
+.image-preview img {
+    height: 100%;
 }
