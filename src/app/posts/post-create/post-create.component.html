@@ -17,7 +17,7 @@
           <input type="file" #filePicker (change)="onPickedImage($event)" />
         </div>
         <div class="image-preview">
-          @if(imagePreview !== '' && imagePreview !== null) {
+          @if(imagePreview !== '' && imagePreview !== null && form.get('image')?.valid) {
           <img [src]="imagePreview" alt="Image Preview" />
           } @else {
           <p>Please pick an image.</p>

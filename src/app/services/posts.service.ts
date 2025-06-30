@@ -8,6 +8,7 @@ import { HttpClient } from "@angular/common/http";
 export class PostsService {
 
     private http = inject(HttpClient);
+    apiURL = 'http://localhost:3000/api/posts'; // Base URL for the API
 
     private posts: Post[] = [];
     private postsUpdated = new Subject<Post[]>();
@@ -17,7 +18,7 @@ export class PostsService {
     // Method to get posts from the server and update the local posts array
     getPosts() {
         // return [...this.posts]; // Return a copy of the posts array
-        let post = this.http.get<{ message: string, posts: Post[] }>('http://localhost:3000/api/posts').subscribe((response) => {
+        let post = this.http.get<{ message: string, posts: Post[] }>(this.apiURL).subscribe((response) => {
             if (response.posts.length !== 0) {
                 this.posts = response.posts;
                 localStorage.setItem("posts", JSON.stringify(this.posts));
@@ -36,7 +37,7 @@ export class PostsService {
 
     // Method to add a new post to the server and update the local posts array
     addPost(post: Post) {
-        this.http.post<{ message: string, post: Post }>('http://localhost:3000/api/posts', post).subscribe((response) => {
+        this.http.post<{ message: string, post: Post }>(this.apiURL, post).subscribe((response) => {
             console.log(response.message);
             post = response.post; // Assuming the server returns the new post ID in the response
             localStorage.setItem("posts", JSON.stringify([...this.posts, post]));
@@ -47,7 +48,7 @@ export class PostsService {
 
     //Method to update a post
     updatePost(postId: string, post: Post) {
-        this.http.put('http://localhost:3000/api/posts/' + postId, post).subscribe((res => {
+        this.http.put(this.apiURL + '/' + postId, post).subscribe((res => {
             const updatedPosts = [...this.posts];
             const oldPostIndex = updatedPosts.findIndex(p => p.id === post.id);
             updatedPosts[oldPostIndex] = post
@@ -59,7 +60,7 @@ export class PostsService {
 
     // Method to Delete an existing post on the server and in the local posts array
     deletePost(postId: string) {
-        this.http.delete('http://localhost:3000/api/posts/' + postId).subscribe(() => {
+        this.http.delete(this.apiURL + '/' + postId).subscribe(() => {
             this.posts = this.posts.filter(post => post.id !== postId); // Remove the deleted post from the local posts array
             localStorage.setItem("posts", JSON.stringify(this.posts)); // Update local storage
             this.postsUpdated.next([...this.posts]); // Notify subscribers with the updated posts

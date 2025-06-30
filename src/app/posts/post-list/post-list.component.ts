@@ -23,7 +23,9 @@ export class PostListComponent implements OnInit {
     isLoading = false;
 
     constructor(public postService: PostsService, public route: ActivatedRoute) {
+        this.isLoading = true;
         this.postService.loadPosts();
+        this.isLoading = false;
     }
     openAll() {
         this.accordion().openAll();
