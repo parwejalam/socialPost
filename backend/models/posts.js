@@ -4,7 +4,7 @@ const mongooese = require('mongoose');
 const postSchema = mongooese.Schema({
     title: { type: String, required: true },
     content: { type: String, required: true },
-    imagePath: { type: String, required: false }
+    imagePath: { type: String, required: true }
 });
 
 module.exports = mongooese.model('Post', postSchema);

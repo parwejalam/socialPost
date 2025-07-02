@@ -2,23 +2,45 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Post = require('../models/posts');
 const router = express.Router();
+const multer = require('multer');
+
+const MIME_TYPE_MAP = {
+    'image/png': 'png',
+    'image/jpeg': 'jpeg',
+    'image/jpg': 'jpg'
+}
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {       //cb is a callback function that tells multer where to store the file
+        const isValid = MIME_TYPE_MAP[file.mimetype];
+        let error = new Error("Invilid mime type.")
+        if (isValid) {
+            error = null;
+        }
+        cb(error, 'backend/images'); // Store images in the 'backend/images' directory
+    },
+    filename: (req, file, cb) => {
+        const name = file.originalname.toLowerCase().split(' ').join('-');
+        const ext = MIME_TYPE_MAP[file.mimetype]
+        cb(null, name + '-' + Date.now() + '.' + ext)
+    }
+})
 
 //post request to add a new post
-router.post('', (req, res, next) => {
+router.post('', multer({ storage: storage }).single("image"), (req, res, next) => {
+    const url = req.protocol + '://' + req.get("host")
     const post = new Post({
         title: req.body.title,
         content: req.body.content,
-        imagePath: req.body.imagePath
+        imagePath: url + "/images/" + req.file.filename
     });
     post.save().then(createdPost => {
         console.log(createdPost)
         res.status(201).json({
             message: 'Post added successfully!',
             post: {
+                ...createdPost,
                 id: createdPost._id,
-                title: createdPost.title,
-                content: createdPost.content,
-                imagePath: createdPost.imagePath
             },
         })
     }).catch(error => {
@@ -43,7 +65,7 @@ router.post('/bulk', (req, res) => {
         .map(post => ({
             title: post.title,
             content: post.content,
-            imagePath: post.imagePath || ''
+            imagePath: post.imagePath
         }));
 
     if (validPosts.length === 0) {

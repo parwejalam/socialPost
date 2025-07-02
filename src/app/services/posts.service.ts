@@ -36,8 +36,13 @@ export class PostsService {
     }
 
     // Method to add a new post to the server and update the local posts array
-    addPost(post: Post) {
-        this.http.post<{ message: string, post: Post }>(this.apiURL, post).subscribe((response) => {
+    addPost(post: Post, image: File) {
+        const postData = new FormData();
+        postData.append("title", post.title);
+        postData.append("content", post.content || '');
+        postData.append("image", image as File, post.title); // Ensure post.image is a File type
+
+        this.http.post<{ message: string, post: Post }>(this.apiURL, postData).subscribe((response) => {
             console.log(response.message);
             post = response.post; // Assuming the server returns the new post ID in the response
             localStorage.setItem("posts", JSON.stringify([...this.posts, post]));

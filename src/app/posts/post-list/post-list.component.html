@@ -20,10 +20,16 @@
           @if(post.content){
           <mat-panel-description>
             <!-- {{post.desc}} -->
+            {{post.content}}
           </mat-panel-description>
           }
         </mat-expansion-panel-header>
-        {{post.content}}
+        @if (post.imagePath) {
+        <div class="post-image">
+          <img [src]="post.imagePath" [alt]="post.title">
+        </div>
+        {{post.imagePath| json}}
+        }
         <mat-action-row>
           <button mat-button color="primary"><a [routerLink]="['/edit', post.id]">Edit</a></button>
           <button mat-button color="warn" (click)="deletPost(post.id)">Delet</button>

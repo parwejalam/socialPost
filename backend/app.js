@@ -1,3 +1,4 @@
+const path = require('path')
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -20,5 +21,6 @@ mongoose.connect(mongoURL)
 app.use(bodyParser.json());
 app.use(cors());
 app.use('/api/posts', postsRoutes);
+app.use('/images', express.static(path.join("backend/images")));
 
 module.exports = app;
