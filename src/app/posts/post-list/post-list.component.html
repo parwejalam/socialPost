@@ -20,7 +20,6 @@
           @if(post.content){
           <mat-panel-description>
             <!-- {{post.desc}} -->
-            {{post.content}}
           </mat-panel-description>
           }
         </mat-expansion-panel-header>
@@ -28,7 +27,7 @@
         <div class="post-image">
           <img [src]="post.imagePath" [alt]="post.title">
         </div>
-        {{post.imagePath| json}}
+        {{post.content}}
         }
         <mat-action-row>
           <button mat-button color="primary"><a [routerLink]="['/edit', post.id]">Edit</a></button>

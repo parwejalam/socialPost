@@ -43,7 +43,7 @@ export class PostsService {
         postData.append("image", image as File, post.title); // Ensure post.image is a File type
 
         this.http.post<{ message: string, post: Post }>(this.apiURL, postData).subscribe((response) => {
-            console.log(response.message);
+            // console.log(response.post);
             post = response.post; // Assuming the server returns the new post ID in the response
             localStorage.setItem("posts", JSON.stringify([...this.posts, post]));
             this.posts.push(post);
