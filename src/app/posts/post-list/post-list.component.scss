@@ -77,11 +77,24 @@ mat-accordion {
     margin-top: 15px;
 }
 
-.post-image{
+.post-image {
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.post-image img{
-    width: 100%;
-    box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+.post-image img {
+    max-width: 100%;
+    width: 400px;
+    height: auto;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+    display: block;
+}
+
+@media (max-width: 500px) {
+    .post-image img {
+        width: 100%;
+        max-width: 100%;
+    }
 }

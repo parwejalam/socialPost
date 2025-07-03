@@ -7,30 +7,29 @@
     <form [formGroup]="form" (ngSubmit)="onSavePost()">
       <mat-form-field>
         <mat-label>Title</mat-label>
-        <input matInput formControlName="title" placeholder="Enter post title" />
+        <input matInput type="text" formControlName="title" placeholder="Enter post title" />
         @if(form.get('title')?.invalid){
         <mat-error>Please add title.</mat-error>
         }
-        </mat-form-field>
-        <div>
-          <button mat-storked-button type="button" (click)="filePicker.click()">Pick Image.</button>
-          <input type="file" #filePicker (change)="onPickedImage($event)" />
-        </div>
-        <div class="image-preview">
-          @if(imagePreview !== '' && imagePreview !== null && form.get('image')?.valid) {
-          <img [src]="imagePreview" alt="Image Preview" />
-          } @else {
-          <p>Please pick an image.</p>
-          }
-        </div>
-        <mat-form-field>
+      </mat-form-field>
+      <div>
+        <button mat-storked-button type="button" (click)="filePicker.click()">Pick Image.</button>
+        <input type="file" #filePicker (change)="onPickedImage($event)" />
+      </div>
+      <div class="image-preview">
+        @if(imagePreview !== '' && imagePreview !== null && form.get('image')?.valid) {
+        <img [src]="imagePreview" alt="Image Preview" />
+        } @else {
+        <p>Please pick an image.</p>
+        }
+      </div>
+      <mat-form-field>
         <textarea matInput rows="6" formControlName="content" placeholder="What's on your mind?"></textarea>
         @if(form.get('content')?.invalid){
         <mat-error>Please add some text.</mat-error>
         }
       </mat-form-field>
-      <button mat-raised-button [color]="form.valid ? 'primary' : 'warn'" type="submit"
-        [disabled]="!form.valid">Submit</button>
+      <button mat-raised-button type="submit" [disabled]="!form.valid">Submit</button>
     </form>
 
   </mat-card>

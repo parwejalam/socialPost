@@ -94,18 +94,24 @@ router.post('/bulk', (req, res) => {
 });
 
 //update post data.
-router.put("/:id", (req, res, next) => {
+router.put("/:id", multer({ storage: storage }).single("image"), (req, res, next) => {
+    let imagePath = req.body.imagePath;
+    if (req.file) {
+        const url = req.protocol + "://" + req.get("host");
+        imagePath = url + "/images/" + req.file.filename
+    }
+
     const post = new Post({
         _id: req.params.id,
         title: req.body.title,
         content: req.body.content,
         imagePath: req.body.imagePath
     });
+    console.log(post);
     Post.updateOne({ _id: req.params.id }, post).then(result => {
-        console.log(result);
         res.status(200).json({
             message: "Post updated successFul!",
-            post: post
+            // post: post
         })
     })
 });
@@ -131,6 +137,16 @@ router.get('', (req, res, next) => {
         });
     });
 })
+
+router.get("/:id", (req, res, next) => {
+    Post.findById(req.params.id).then(post => {
+        if (post) {
+            res.status(200).json(post);
+        } else {
+            res.status(404).json({ message: "Post not found!" });
+        }
+    });
+});
 
 // delete request to remove a post by its ID
 router.delete("/:id", (req, res, next) => {

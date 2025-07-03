@@ -33,19 +33,20 @@ export class PostCreateComponent implements OnInit {
             if (param.has('postId')) {
                 this.mode = 'edit';
                 this.postId = param.get('postId')!;
-                this.isLoading = true;
-                const postData = this.postService.getPost(this.postId);
-                this.isLoading = false;
-                this.post = {
-                    id: postData.id ?? '',
-                    title: postData.title ?? '',
-                    content: postData.content,
-                    imagePath: postData.imagePath
-                };
-                this.form.setValue({
-                    title: this.post.title,
-                    content: this.post.content,
-                    imagePath: this.post.imagePath
+                // this.isLoading = true;
+                this.postService.getPost(this.postId).subscribe((postData) => {
+                    this.post = {
+                        id: postData._id,
+                        title: postData.title,
+                        content: postData.content,
+                        imagePath: postData.imagePath
+                    };
+                    this.form.patchValue({
+                        title: this.post.title,
+                        content: this.post.content,
+                        image: this.post.imagePath
+                    });
+                    this.imagePreview = this.post.imagePath as string;
                 });
             } else {
                 this.mode = 'create';
@@ -66,19 +67,22 @@ export class PostCreateComponent implements OnInit {
     }
 
     onSavePost() {
+        if (this.form.invalid) {
+            return;
+        }
         const post: Post = {
             id: '',
             title: this.form.value.title,
             content: this.form.value.content,
-            // imagePath: this.form.value.imagePath
+            imagePath: this.form.value.imagePath
         };
+        this.isLoading = true;
         if (this.mode == 'create') {
-            this.isLoading = true;
             this.postService.addPost(post, this.form.value.image);
             this.isLoading = false;
         } else if (this.postId) {
             this.isLoading = true;
-            this.postService.updatePost(this.postId, post)
+            this.postService.updatePost(this.postId, post, this.form.value.image);
             this.isLoading = false;
         }
         this.form.reset()

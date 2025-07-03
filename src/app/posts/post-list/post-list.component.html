@@ -16,7 +16,11 @@
       @for(post of postList;track post.title ){
       <mat-expansion-panel>
         <mat-expansion-panel-header>
-          <mat-panel-title>{{post.title}} </mat-panel-title>
+          <mat-panel-title>
+            <h6>
+              {{post.title}}
+            </h6>
+          </mat-panel-title>
           @if(post.content){
           <mat-panel-description>
             <!-- {{post.desc}} -->

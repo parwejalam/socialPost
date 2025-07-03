@@ -41,9 +41,7 @@ export class PostListComponent implements OnInit {
         this.postService.getPosts();
         this.isLoading = true;
         this.postsSub = this.postService.getPostsUpdatedListener().subscribe((posts: Post[]) => {
-
             this.postList = posts;
-
         });
         this.isLoading = false;
     }

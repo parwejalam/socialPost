@@ -2,6 +2,7 @@ import { inject, Injectable } from "@angular/core";
 import { Post } from '../model/post.model';
 import { Subject } from "rxjs";
 import { HttpClient } from "@angular/common/http";
+import { Router } from "@angular/router";
 
 
 @Injectable({ providedIn: 'root' })
@@ -13,7 +14,7 @@ export class PostsService {
     private posts: Post[] = [];
     private postsUpdated = new Subject<Post[]>();
 
-    constructor() { }
+    constructor(private router: Router) { }
 
     // Method to get posts from the server and update the local posts array
     getPosts() {
@@ -32,7 +33,7 @@ export class PostsService {
 
     // Method to get one post from the server
     getPost(id: string) {
-        return { ...this.posts.find(p => p.id === id) }
+        return this.http.get<{ _id: string, title: string, content: string, imagePath: File | string }>(this.apiURL + '/' + id)
     }
 
     // Method to add a new post to the server and update the local posts array
@@ -43,24 +44,46 @@ export class PostsService {
         postData.append("image", image as File, post.title); // Ensure post.image is a File type
 
         this.http.post<{ message: string, post: Post }>(this.apiURL, postData).subscribe((response) => {
-            // console.log(response.post);
             post = response.post; // Assuming the server returns the new post ID in the response
             localStorage.setItem("posts", JSON.stringify([...this.posts, post]));
             this.posts.push(post);
             this.postsUpdated.next([...this.posts]);
+            this.router.navigate(["/"]);
         });
     }
 
     //Method to update a post
-    updatePost(postId: string, post: Post) {
-        this.http.put(this.apiURL + '/' + postId, post).subscribe((res => {
-            const updatedPosts = [...this.posts];
-            const oldPostIndex = updatedPosts.findIndex(p => p.id === post.id);
-            updatedPosts[oldPostIndex] = post
-            this.posts = updatedPosts; // Update the local posts array with the modified post
-            this.postsUpdated.next([...this.posts])
-        }))
+    updatePost(postId: string, post: Post, image: File | string) {
+        let postData!: Post | FormData;
+        if (typeof (image) === 'object') {
+            postData = new FormData();
+            postData.append("id", postId);
+            postData.append("title", post.title);
+            postData.append("content", post.content || '');
+            postData.append("image", image as File, post.title);
+        } else {
+            postData = {
+                id: postId,
+                title: post.title,
+                content: post.content || '',
+                imagePath: image as string
+            }
+        }
 
+        this.http.put(this.apiURL + '/' + postId, postData).subscribe((res: any) => {
+            const updatedPosts = [...this.posts];
+            const oldPostIndex = updatedPosts.findIndex(p => p.id === postId);
+            let newPost: Post = {
+                id: postId,
+                title: post.title,
+                content: post.content || '',
+                imagePath: (res && res.post && res.post.imagePath) ? res.post.imagePath : (typeof image === 'string' ? image : '')
+            };
+            updatedPosts[oldPostIndex] = newPost;
+            this.posts = updatedPosts; // Update the local posts array with the modified post
+            this.postsUpdated.next([...this.posts]);
+            this.router.navigate(["/"]);
+        });
     }
 
     // Method to Delete an existing post on the server and in the local posts array
