@@ -12,18 +12,21 @@ export class PostsService {
     apiURL = 'http://localhost:3000/api/posts'; // Base URL for the API
 
     private posts: Post[] = [];
-    private postsUpdated = new Subject<Post[]>();
+    private postsUpdated = new Subject<{ posts: Post[], postCount: number }>();
 
     constructor(private router: Router) { }
 
     // Method to get posts from the server and update the local posts array
     getPosts(postPerPage: number, currentPage: number) {
         const queryParams = `?pagesize=${postPerPage}&page=${currentPage}`;
-        let post = this.http.get<{ message: string, posts: Post[] }>(this.apiURL + queryParams).subscribe((response) => {
+        let post = this.http.get<{ message: string, posts: Post[], maxPosts: number }>(this.apiURL + queryParams).subscribe((response) => {
             if (response.posts.length !== 0) {
                 this.posts = response.posts;
                 localStorage.setItem("posts", JSON.stringify(this.posts));
-                this.postsUpdated.next([...this.posts]); // Notify subscribers with a copy of the updated posts
+                this.postsUpdated.next({
+                    posts: [...this.posts],
+                    postCount: response.maxPosts
+                }); // Notify subscribers with a copy of the updated posts
             } else {
                 console.log("No posts found");
             }
@@ -44,10 +47,6 @@ export class PostsService {
         postData.append("image", image as File, post.title); // Ensure post.image is a File type
 
         this.http.post<{ message: string, post: Post }>(this.apiURL, postData).subscribe((response) => {
-            post = response.post; // Assuming the server returns the new post ID in the response
-            localStorage.setItem("posts", JSON.stringify([...this.posts, post]));
-            this.posts.push(post);
-            this.postsUpdated.next([...this.posts]);
             this.router.navigate(["/"]);
         });
     }
@@ -71,28 +70,13 @@ export class PostsService {
         }
 
         this.http.put(this.apiURL + '/' + postId, postData).subscribe((res: any) => {
-            const updatedPosts = [...this.posts];
-            const oldPostIndex = updatedPosts.findIndex(p => p.id === postId);
-            let newPost: Post = {
-                id: postId,
-                title: post.title,
-                content: post.content || '',
-                imagePath: (res && res.post && res.post.imagePath) ? res.post.imagePath : (typeof image === 'string' ? image : '')
-            };
-            updatedPosts[oldPostIndex] = newPost;
-            this.posts = updatedPosts; // Update the local posts array with the modified post
-            this.postsUpdated.next([...this.posts]);
             this.router.navigate(["/"]);
         });
     }
 
     // Method to Delete an existing post on the server and in the local posts array
     deletePost(postId: string) {
-        this.http.delete(this.apiURL + '/' + postId).subscribe(() => {
-            this.posts = this.posts.filter(post => post.id !== postId); // Remove the deleted post from the local posts array
-            localStorage.setItem("posts", JSON.stringify(this.posts)); // Update local storage
-            this.postsUpdated.next([...this.posts]); // Notify subscribers with the updated posts
-        });
+        return this.http.delete(this.apiURL + '/' + postId);
 
     }
 
@@ -101,13 +85,13 @@ export class PostsService {
         return this.postsUpdated.asObservable(); // Return an observable to listen for updates
     }
 
-    // Method to load posts from local storage when the service is initialized
-    loadPosts() {
-        const storedPosts = localStorage.getItem("posts");
-        if (storedPosts) {
-            this.posts.push(JSON.parse(storedPosts));
-            return this.postsUpdated.next([...this.posts])
-        }
-    }
+    // // Method to load posts from local storage when the service is initialized
+    // loadPosts() {
+    //     const storedPosts = localStorage.getItem("posts");
+    //     if (storedPosts) {
+    //         this.posts.push(JSON.parse(storedPosts));
+    //         return this.postsUpdated.next([...this.posts])
+    //     }
+    // }
 
 }

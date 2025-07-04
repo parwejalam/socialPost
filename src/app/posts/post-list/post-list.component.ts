@@ -22,14 +22,14 @@ export class PostListComponent implements OnInit {
     postList: Post[] = [];
     private postsSub!: Subscription;
     isLoading = false;
-    length = 100;
+    totalPost = 0;
     postPerPage = 5;
     currentPage = 1;
     pageSizeOptions: number[] = [2, 3, 5, 10, 25, 100];
 
     constructor(public postService: PostsService, public route: ActivatedRoute) {
         this.isLoading = true;
-        this.postService.loadPosts();
+        // this.postService.loadPosts();
         this.isLoading = false;
     }
     openAll() {
@@ -42,13 +42,14 @@ export class PostListComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.postService.loadPosts();
+        // this.postService.loadPosts();
         this.postService.getPosts(this.postPerPage, this.currentPage);
         this.isLoading = true;
-        this.postsSub = this.postService.getPostsUpdatedListener().subscribe((posts: Post[]) => {
-            this.isLoading = false;
-            this.postList = posts;
+        this.postsSub = this.postService.getPostsUpdatedListener().subscribe((postData: { posts: Post[], postCount: number }) => {
+            this.totalPost = postData.postCount;
+            this.postList = postData.posts;
         });
+        this.isLoading = false;
     }
 
     onChangePage(pageData: PageEvent) {
@@ -61,8 +62,13 @@ export class PostListComponent implements OnInit {
 
 
     deletPost(postId: string) {
-        this.postService.deletePost(postId);
-    }
+        this.postService.deletePost(postId).subscribe(() => {
+            this.isLoading = true;
+            this.postService.getPosts(this.postPerPage, this.currentPage);
+            this.isLoading = false;
+
+        })
+    };
 
     ngOnDestroy() {
         this.postsSub.unsubscribe()

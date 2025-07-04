@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const Post = require('../models/posts');
 const router = express.Router();
 const multer = require('multer');
+const { count } = require('rxjs');
 
 const MIME_TYPE_MAP = {
     'image/png': 'png',
@@ -118,35 +119,42 @@ router.put("/:id", multer({ storage: storage }).single("image"), (req, res, next
 
 // get request to fetch all posts
 router.get('', (req, res, next) => {
-    const pageSize = req.query.pagesize;
-    const currentPage = req.query.page;
+    let pageSize = parseInt(req.query.pagesize);
+    let currentPage = parseInt(req.query.page);
     const postQuery = Post.find();
+    let fetchedPost;
 
-    console.log(JSON.stringify(req.query))
-    if (pageSize && currentPage) {
+    if (!isNaN(pageSize) && !isNaN(currentPage)) {
         postQuery
-        .skip(pageSize * (currentPage - 1))
-        .limit(pageSize);
+            .skip(pageSize * (currentPage - 1))
+            .limit(pageSize);
     }
 
-    postQuery.then(documents => {
-        res.status(200).json({
-            message: 'Posts fetched successfully!',
-            posts: documents.map(doc => {
-                return {
-                    id: doc._id,
-                    title: doc.title,
-                    content: doc.content,
-                    imagePath: doc.imagePath
-                };
-            })
+    postQuery
+        .then(document => {
+            fetchedPost = document;
+            // Use countDocuments instead of deprecated count
+            return Post.countDocuments();
+        })
+        .then(count => {
+            res.status(200).json({
+                message: 'Posts fetched successfully!',
+                posts: fetchedPost.map(doc => {
+                    return {
+                        id: doc._id,
+                        title: doc.title,
+                        content: doc.content,
+                        imagePath: doc.imagePath
+                    };
+                }),
+                maxPosts: count
+            });
+        }).catch(error => {
+            res.status(500).json({
+                message: 'Fetching posts failed!',
+                error: error.message || error
+            });
         });
-    }).catch(error => {
-        res.status(500).json({
-            message: 'Fetching posts failed!',
-            error: error
-        });
-    });
 })
 
 router.get("/:id", (req, res, next) => {

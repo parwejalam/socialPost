@@ -41,7 +41,7 @@
       }
     </mat-accordion>
 
-    <mat-paginator [length]="length" [pageSize]="postPerPage" [pageSizeOptions]="pageSizeOptions" aria-label="Select page" (page)="onChangePage($event)">
+    <mat-paginator [length]="totalPost" [pageSize]="postPerPage" [pageSizeOptions]="pageSizeOptions" aria-label="Select page" (page)="onChangePage($event)">
     </mat-paginator>
 
     }
