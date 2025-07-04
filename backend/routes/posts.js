@@ -118,7 +118,18 @@ router.put("/:id", multer({ storage: storage }).single("image"), (req, res, next
 
 // get request to fetch all posts
 router.get('', (req, res, next) => {
-    Post.find().then(documents => {
+    const pageSize = req.query.pagesize;
+    const currentPage = req.query.page;
+    const postQuery = Post.find();
+
+    console.log(JSON.stringify(req.query))
+    if (pageSize && currentPage) {
+        postQuery
+        .skip(pageSize * (currentPage - 1))
+        .limit(pageSize);
+    }
+
+    postQuery.then(documents => {
         res.status(200).json({
             message: 'Posts fetched successfully!',
             posts: documents.map(doc => {

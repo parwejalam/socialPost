@@ -40,6 +40,10 @@
       </mat-expansion-panel>
       }
     </mat-accordion>
+
+    <mat-paginator [length]="length" [pageSize]="postPerPage" [pageSizeOptions]="pageSizeOptions" aria-label="Select page" (page)="onChangePage($event)">
+    </mat-paginator>
+
     }
     @if(postList.length <= 0) { <p class='info-text mat-body'>No posts added yet!</p>
       }

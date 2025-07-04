@@ -6,12 +6,13 @@ import { Post } from "../../model/post.model";
 import { Subscription } from "rxjs";
 import { ActivatedRoute, Params, RouterModule } from "@angular/router";
 import { LoaderComponent } from "../../loader/loader.component";
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 
 @Component({
     selector: "app-post-list",
     standalone: true,
-    imports: [MaterialModule, RouterModule, LoaderComponent],
+    imports: [MaterialModule, RouterModule, LoaderComponent, MatPaginatorModule],
     templateUrl: "./post-list.component.html",
     styleUrls: ["./post-list.component.scss"],
 })
@@ -21,6 +22,10 @@ export class PostListComponent implements OnInit {
     postList: Post[] = [];
     private postsSub!: Subscription;
     isLoading = false;
+    length = 100;
+    postPerPage = 5;
+    currentPage = 1;
+    pageSizeOptions: number[] = [2, 3, 5, 10, 25, 100];
 
     constructor(public postService: PostsService, public route: ActivatedRoute) {
         this.isLoading = true;
@@ -38,11 +43,19 @@ export class PostListComponent implements OnInit {
 
     ngOnInit() {
         this.postService.loadPosts();
-        this.postService.getPosts();
+        this.postService.getPosts(this.postPerPage, this.currentPage);
         this.isLoading = true;
         this.postsSub = this.postService.getPostsUpdatedListener().subscribe((posts: Post[]) => {
+            this.isLoading = false;
             this.postList = posts;
         });
+    }
+
+    onChangePage(pageData: PageEvent) {
+        this.isLoading = true;
+        this.currentPage = pageData.pageIndex + 1;
+        this.postPerPage = pageData.pageSize;
+        this.postService.getPosts(this.postPerPage, this.currentPage);
         this.isLoading = false;
     }
 

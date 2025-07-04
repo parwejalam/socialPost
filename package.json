@@ -8,7 +8,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "debug:server": "node --inspect server.js"
+    "debug:server": "nodemon --inspect server.js"
   },
   "private": true,
   "dependencies": {

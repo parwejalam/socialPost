@@ -17,9 +17,9 @@ export class PostsService {
     constructor(private router: Router) { }
 
     // Method to get posts from the server and update the local posts array
-    getPosts() {
-        // return [...this.posts]; // Return a copy of the posts array
-        let post = this.http.get<{ message: string, posts: Post[] }>(this.apiURL).subscribe((response) => {
+    getPosts(postPerPage: number, currentPage: number) {
+        const queryParams = `?pagesize=${postPerPage}&page=${currentPage}`;
+        let post = this.http.get<{ message: string, posts: Post[] }>(this.apiURL + queryParams).subscribe((response) => {
             if (response.posts.length !== 0) {
                 this.posts = response.posts;
                 localStorage.setItem("posts", JSON.stringify(this.posts));
