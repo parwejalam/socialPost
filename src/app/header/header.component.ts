@@ -12,6 +12,8 @@ export class HeaderComponent {
 
   navLinks = [
     { routeraLink: '/', Label: 'Home' },
-    { routeraLink: '/createPost', Label: 'Add Post' }
+    { routeraLink: '/createPost', Label: 'Add Post' },
+    { routeraLink: '/login', Label: 'Login' },
+    { routeraLink: '/signup', Label: 'SignUp' }
   ]
 }
