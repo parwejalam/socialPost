@@ -1,8 +1,8 @@
 import { Component } from "@angular/core";
 import { LoaderComponent } from "../../loader/loader.component";
 import { MaterialModule } from "../../module/material/material.module";
-import { PostsService } from '../../services/posts.service';
 import { NgForm } from "@angular/forms";
+import { AuthService } from "../../services/auth.service";
 
 @Component({
     standalone: true,
@@ -12,7 +12,7 @@ import { NgForm } from "@angular/forms";
 })
 
 export class LoginComponent {
-    constructor(private postsService: PostsService) { }
+    constructor(private authUser: AuthService) { }
     isLoading = false;
 
 
@@ -20,13 +20,12 @@ export class LoginComponent {
         if (form.invalid) {
             return;
         }
-        // this.isLoading = true;
-        console.log(form.value);
-        // Simulate a login request
-        // this.postsService.login(form.value).subscribe({,
-        // setTimeout(() => {
-        //     this.isLoading = false;
+        this.isLoading = true;
+        // console.log(form.value);
+        this.authUser.login(form.value);
+        setTimeout(() => {
+            this.isLoading = false;
             form.reset();
-        // }, 2000);
+        }, 2000);
     }
 }
