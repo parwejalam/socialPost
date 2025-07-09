@@ -5,11 +5,16 @@ import { Router } from "@angular/router";
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-    apiUrl = "http://localhost:3000/api/user";
+    private apiUrl = "http://localhost:3000/api/user";
+    private token: string | undefined;
 
     constructor(private http: HttpClient, private router: Router) { }
 
 
+    getToken() {
+        return this.token;
+        console.log("Token from AuthService:", this.token);
+    }
     // Method to create a new user
     createUser(authData: AuthUser) {
         // const authData = { email: email, password: password }
@@ -28,9 +33,11 @@ export class AuthService {
 
     // Method to login a user
     login(authData: AuthUser) {
-        this.http.post(this.apiUrl + '/login', authData).subscribe({
+        this.http.post<{ token: any }>(this.apiUrl + '/login', authData).subscribe({
             next: (response) => {
                 console.log("response from backend", response);
+                this.token = response.token;
+                console.log("Token received:", this.token);
                 // this.router.navigate(["/"]);
             },
             error: (err) => {

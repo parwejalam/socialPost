@@ -8,13 +8,12 @@ import { Router } from "@angular/router";
 @Injectable({ providedIn: 'root' })
 export class PostsService {
 
-    private http = inject(HttpClient);
+    constructor(private http: HttpClient, private router: Router) { }
     apiURL = 'http://localhost:3000/api/posts'; // Base URL for the API
 
     private posts: Post[] = [];
     private postsUpdated = new Subject<{ posts: Post[], postCount: number }>();
 
-    constructor(private router: Router) { }
 
     // Method to get posts from the server and update the local posts array
     getPosts(postPerPage: number, currentPage: number) {

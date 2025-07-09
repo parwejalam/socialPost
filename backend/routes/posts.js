@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Post = require('../models/posts');
 const router = express.Router();
+const checkAuth = require('../middleware/check-auth')
 const multer = require('multer');
 const { count } = require('rxjs');
 
@@ -28,7 +29,7 @@ const storage = multer.diskStorage({
 })
 
 //post request to add a new post
-router.post('', multer({ storage: storage }).single("image"), (req, res, next) => {
+router.post('', checkAuth, multer({ storage: storage }).single("image"), (req, res, next) => {
     const url = req.protocol + '://' + req.get("host")
     const post = new Post({
         title: req.body.title,
@@ -54,48 +55,48 @@ router.post('', multer({ storage: storage }).single("image"), (req, res, next) =
 });
 
 // post request to add multiple records at once.
-router.post('/bulk', (req, res) => {
-    const posts = Array.isArray(req.body) ? req.body : [req.body];
-    if (!Array.isArray(posts) || posts.length === 0) {
-        return res.status(400).json({ message: 'No posts provided' });
-    }
+// router.post('/bulk', (req, res) => {
+//     const posts = Array.isArray(req.body) ? req.body : [req.body];
+//     if (!Array.isArray(posts) || posts.length === 0) {
+//         return res.status(400).json({ message: 'No posts provided' });
+//     }
 
-    // Validate and map each post to match schema fields
-    const validPosts = posts
-        .filter(post => post.title && post.content) // basic validation
-        .map(post => ({
-            title: post.title,
-            content: post.content,
-            imagePath: post.imagePath
-        }));
+//     // Validate and map each post to match schema fields
+//     const validPosts = posts
+//         .filter(post => post.title && post.content) // basic validation
+//         .map(post => ({
+//             title: post.title,
+//             content: post.content,
+//             imagePath: post.imagePath
+//         }));
 
-    if (validPosts.length === 0) {
-        return res.status(400).json({ message: 'No valid posts provided' });
-    }
+//     if (validPosts.length === 0) {
+//         return res.status(400).json({ message: 'No valid posts provided' });
+//     }
 
-    Post.insertMany(validPosts)
-        .then(createdPosts => {
-            res.status(201).json({
-                message: 'Posts added successfully!',
-                posts: createdPosts.map(post => ({
-                    id: post._id,
-                    title: post.title,
-                    content: post.content,
-                    imagePath: post.imagePath
-                }))
-            });
-        })
-        .catch(error => {
-            console.error('Error saving posts:', error);
-            res.status(500).json({
-                message: 'Creating posts failed!',
-                error: error.message
-            });
-        });
-});
+//     Post.insertMany(validPosts)
+//         .then(createdPosts => {
+//             res.status(201).json({
+//                 message: 'Posts added successfully!',
+//                 posts: createdPosts.map(post => ({
+//                     id: post._id,
+//                     title: post.title,
+//                     content: post.content,
+//                     imagePath: post.imagePath
+//                 }))
+//             });
+//         })
+//         .catch(error => {
+//             console.error('Error saving posts:', error);
+//             res.status(500).json({
+//                 message: 'Creating posts failed!',
+//                 error: error.message
+//             });
+//         });
+// });
 
 //update post data.
-router.put("/:id", multer({ storage: storage }).single("image"), (req, res, next) => {
+router.put("/:id", checkAuth, multer({ storage: storage }).single("image"), (req, res, next) => {
     let imagePath = req.body.imagePath;
     if (req.file) {
         const url = req.protocol + "://" + req.get("host");
@@ -168,7 +169,7 @@ router.get("/:id", (req, res, next) => {
 });
 
 // delete request to remove a post by its ID
-router.delete("/:id", (req, res, next) => {
+router.delete("/:id", checkAuth, (req, res, next) => {
     // Basic validation of the ID
     if (!req.params.id || !mongoose.Types.ObjectId.isValid(req.params.id)) {
         return res.status(400).json({ message: 'Invalid post ID' });
