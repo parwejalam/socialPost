@@ -13,7 +13,7 @@
     }
     @if(postList.length > 0) {
     <mat-accordion class='example-headers-align' multi>
-      @for(post of postList;track post.title ){
+      @for(post of postList;track $index ){
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>
@@ -33,15 +33,18 @@
         </div>
         {{post.content}}
         }
+        @if(isAuthenticated){
         <mat-action-row>
           <button mat-button color="primary"><a [routerLink]="['/edit', post.id]">Edit</a></button>
           <button mat-button color="warn" (click)="deletPost(post.id)">Delet</button>
         </mat-action-row>
+        }
       </mat-expansion-panel>
       }
     </mat-accordion>
 
-    <mat-paginator [length]="totalPost" [pageSize]="postPerPage" [pageSizeOptions]="pageSizeOptions" aria-label="Select page" (page)="onChangePage($event)">
+    <mat-paginator [length]="totalPost" [pageSize]="postPerPage" [pageSizeOptions]="pageSizeOptions"
+      aria-label="Select page" (page)="onChangePage($event)">
     </mat-paginator>
 
     }

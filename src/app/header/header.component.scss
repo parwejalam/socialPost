@@ -11,27 +11,31 @@ header {
 
     h1 {
         margin: 0;
+        cursor: pointer;
     }
 
     nav {
-        ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-
-            li {
-                margin-left: 20px;
-
-                a {
-                    color: #fff;
-                    text-decoration: none;
-
-                    &:hover {
-                        text-decoration: underline;
-                    }
-                }
-            }
+        button{
+            background-color: #3438af00;
         }
+        // ul {
+        //     list-style: none;
+        //     margin: 0;
+        //     padding: 0;
+        //     display: flex;
+
+        //     li {
+        //         margin-left: 20px;
+
+        //         a {
+        //             color: #fff;
+        //             text-decoration: none;
+
+        //             &:hover {
+        //                 text-decoration: underline;
+        //             }
+        //         }
+        //     }
+        // }
     }
 }

@@ -64,7 +64,8 @@ router.post("/login", (req, res, next) => {
                 'secrate_should_be_this_longer',
                 { expiresIn: "1h" });
             res.status(200).json({
-                token: token
+                token: token,
+                expiresIn: 3600
             })
         })
         .catch(err => {

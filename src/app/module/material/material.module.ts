@@ -18,6 +18,7 @@ import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
     FormsModule,
     MatCardModule,
     MatExpansionModule,
+    MatButtonModule
   ],
   exports: [
     CommonModule,
