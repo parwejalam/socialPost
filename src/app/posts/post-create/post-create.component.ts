@@ -39,7 +39,8 @@ export class PostCreateComponent implements OnInit {
                         id: postData._id,
                         title: postData.title,
                         content: postData.content,
-                        imagePath: postData.imagePath
+                        imagePath: postData.imagePath,
+                        creator: postData.creator
                     };
                     this.form.patchValue({
                         title: this.post.title,
@@ -74,7 +75,8 @@ export class PostCreateComponent implements OnInit {
             id: '',
             title: this.form.value.title,
             content: this.form.value.content,
-            imagePath: this.form.value.imagePath
+            imagePath: this.form.value.imagePath,
+            creator: null as any // Creator will be set by the service
         };
         this.isLoading = true;
         if (this.mode == 'create') {

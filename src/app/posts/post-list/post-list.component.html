@@ -33,7 +33,7 @@
         </div>
         {{post.content}}
         }
-        @if(isAuthenticated){
+        @if(isAuthenticated && userId === post.creator){
         <mat-action-row>
           <button mat-button color="primary"><a [routerLink]="['/edit', post.id]">Edit</a></button>
           <button mat-button color="warn" (click)="deletPost(post.id)">Delet</button>

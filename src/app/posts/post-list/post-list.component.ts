@@ -22,6 +22,7 @@ export class PostListComponent implements OnInit {
     expandAll = false;
     postList: Post[] = [];
     private postsSub!: Subscription;
+    userId?: string;
     isLoading = false;
     totalPost = 0;
     postPerPage = 25;
@@ -31,9 +32,9 @@ export class PostListComponent implements OnInit {
     authStatusSub?: Subscription;
 
     constructor(public postService: PostsService, public route: ActivatedRoute, private authService: AuthService) {
-        this.isLoading = true;
-        // this.postService.loadPosts();
-        this.isLoading = false;
+        // this.isLoading = true;
+        // // this.postService.loadPosts();
+        // this.isLoading = false;
     }
     openAll() {
         this.accordion().openAll();
@@ -47,6 +48,7 @@ export class PostListComponent implements OnInit {
     ngOnInit() {
         // this.postService.loadPosts();
         this.postService.getPosts(this.postPerPage, this.currentPage);
+        this.userId = this.authService.getUserId();
         this.isLoading = true;
         this.postsSub = this.postService.getPostsUpdatedListener().subscribe((postData: { posts: Post[], postCount: number }) => {
             this.totalPost = postData.postCount;
@@ -57,6 +59,7 @@ export class PostListComponent implements OnInit {
 
         this.authStatusSub = this.authService.getAuthStatusListener().subscribe((res: boolean) => {
             this.isAuthenticated = res;
+            this.userId = this.authService.getUserId();
         });
     }
 

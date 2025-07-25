@@ -109,12 +109,16 @@ router.put("/:id", checkAuth, multer({ storage: storage }).single("image"), (req
         content: req.body.content,
         imagePath: req.body.imagePath
     });
-    console.log(post);
-    Post.updateOne({ _id: req.params.id }, post).then(result => {
-        res.status(200).json({
-            message: "Post updated successFul!",
-            // post: post
-        })
+    console.log("Updated Post",post);
+    Post.updateOne({ _id: req.params.id, creator: req.userData.userId }, post).then(result => {
+        if (result.modifiedCount > 0) {
+            res.status(200).json({
+                message: "Post updated successFul!",
+                // post: post
+            })
+        } else {
+            res.status(401).json({ message: "Not Authorized" })
+        }
     })
 });
 
@@ -176,14 +180,18 @@ router.delete("/:id", checkAuth, (req, res, next) => {
         return res.status(400).json({ message: 'Invalid post ID' });
     }
     //delete the post by ID
-    Post.deleteOne({ _id: req.params.id }).then(result => {
-        if (result.deletedCount === 0) {
-            return res.status(404).json({ message: 'Post not found' });
-        }
+    Post.deleteOne({ _id: req.params.id, creator: req.userData.userId }).then(result => {
+        // if (result.deletedCount === 0) {
+        //     return res.status(404).json({ message: 'Post not found' });
+        // }
         console.log("Post deleted successfully");
-        res.status(200).json({
-            message: 'Post deleted successfully!'
-        });
+        if (result.modifiedCount > 0) {
+            res.status(200).json({
+                message: 'Post deleted successfully!'
+            });
+        } else {
+            res.status(401).json({ message: "Not Authorized!" })
+        }
     }).catch(error => {
         console.error('Error deleting post:', error);
         res.status(500).json({

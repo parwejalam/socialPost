@@ -37,7 +37,7 @@ export class PostsService {
 
     // Method to get one post from the server
     getPost(id: string) {
-        return this.http.get<{ _id: string, title: string, content: string, imagePath: File | string }>(this.apiURL + '/' + id)
+        return this.http.get<{ _id: string, title: string, content: string, imagePath: File | string, creator: string }>(this.apiURL + '/' + id)
     }
 
     // Method to add a new post to the server and update the local posts array
@@ -80,7 +80,8 @@ export class PostsService {
                 id: postId,
                 title: post.title,
                 content: post.content || '',
-                imagePath: image as string
+                imagePath: image as string,
+                creator: post.creator
             }
         }
 
