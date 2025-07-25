@@ -1,6 +1,6 @@
 import { inject, Injectable } from "@angular/core";
 import { Post } from '../model/post.model';
-import { Subject } from "rxjs";
+import { map, Subject } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 
@@ -18,18 +18,20 @@ export class PostsService {
     // Method to get posts from the server and update the local posts array
     getPosts(postPerPage: number, currentPage: number) {
         const queryParams = `?pagesize=${postPerPage}&page=${currentPage}`;
-        let post = this.http.get<{ message: string, posts: Post[], maxPosts: number }>(this.apiURL + queryParams).subscribe((response) => {
-            if (response.posts.length !== 0) {
-                this.posts = response.posts;
-                localStorage.setItem("posts", JSON.stringify(this.posts));
-                this.postsUpdated.next({
-                    posts: [...this.posts],
-                    postCount: response.maxPosts
-                }); // Notify subscribers with a copy of the updated posts
-            } else {
-                console.log("No posts found");
-            }
-        })
+        let post = this.http.get<{ message: string, posts: Post[], maxPosts: number }>(this.apiURL + queryParams)
+            .subscribe(response => {
+                console.log('this is testing response', response);
+                if (response.posts.length !== 0) {
+                    this.posts = response.posts;
+                    localStorage.setItem("posts", JSON.stringify(this.posts));
+                    this.postsUpdated.next({
+                        posts: [...this.posts],
+                        postCount: response.maxPosts
+                    }); // Notify subscribers with a copy of the updated posts
+                } else {
+                    console.log("No posts found");
+                }
+            })
         return post; // Return the observable directly
     }
 
@@ -45,9 +47,23 @@ export class PostsService {
         postData.append("content", post.content || '');
         postData.append("image", image as File, post.title); // Ensure post.image is a File type
 
-        this.http.post<{ message: string, post: Post }>(this.apiURL, postData).subscribe((response) => {
-            this.router.navigate(["/"]);
-        });
+        this.http.post<{ message: string, post: any }>(this.apiURL, postData)
+            .subscribe((response) => {
+                const newPost = {
+                    id: response.post._doc._id,
+                    title: response.post._doc.title,
+                    content: response.post._doc.content || '',
+                    imagePath: response.post._doc.imagePath ? response.post._doc.imagePath : '',
+                    creator: response.post._doc.creator
+                };
+                this.posts.push(newPost);
+                this.postsUpdated.next({
+                    posts: [...this.posts],
+                    postCount: this.posts.length
+                });
+                console.log('Post added successfully db res:', newPost);
+                this.router.navigate(["/"]);
+            });
     }
 
     //Method to update a post

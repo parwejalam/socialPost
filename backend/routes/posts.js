@@ -34,11 +34,11 @@ router.post('', checkAuth, multer({ storage: storage }).single("image"), (req, r
     const post = new Post({
         title: req.body.title,
         content: req.body.content,
-        imagePath: url + "/images/" + req.file.filename
+        imagePath: url + "/images/" + req.file.filename,
+        creator: req.userData.userId
     });
     post.save().then(createdPost => {
-        console.log(createdPost)
-        res.status(201).json({
+        res.status(200).json({
             message: 'Post added successfully!',
             post: {
                 ...createdPost,
@@ -145,7 +145,8 @@ router.get('', (req, res, next) => {
                         id: doc._id,
                         title: doc.title,
                         content: doc.content,
-                        imagePath: doc.imagePath
+                        imagePath: doc.imagePath,
+                        creator: doc.creator
                     };
                 }),
                 maxPosts: count

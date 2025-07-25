@@ -10,7 +10,8 @@ module.exports = (req, res, next) => {
         if (!token) {
             return res.status(401).json({ message: "Auth Failed: Malformed token." });
         }
-        jwt.verify(token, "secrate_should_be_this_longer");
+        const decodedToken = jwt.verify(token, "secrate_should_be_this_longer");
+        req.userData = {email: decodedToken.email, userId : decodedToken.userId}
         next();
     } catch (error) {
         res.status(401).json({

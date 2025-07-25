@@ -24,7 +24,7 @@ export class PostListComponent implements OnInit {
     private postsSub!: Subscription;
     isLoading = false;
     totalPost = 0;
-    postPerPage = 5;
+    postPerPage = 25;
     currentPage = 1;
     pageSizeOptions: number[] = [2, 3, 5, 10, 25, 100];
     isAuthenticated = false;
