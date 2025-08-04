@@ -45,11 +45,11 @@ router.post('', checkAuth, multer({ storage: storage }).single("image"), (req, r
                 id: createdPost._id,
             },
         })
-    }).catch(error => {
-        console.error('Error saving post:', error);
+    }).catch(err => {
+        console.error('Error saving post:', err);
         res.status(500).json({
             message: 'Creating post failed!',
-            error: error.message // Send only the error message for security
+            error: err.message // Send only the error message for security
         });
     });
 });
@@ -155,10 +155,10 @@ router.get('', (req, res, next) => {
                 }),
                 maxPosts: count
             });
-        }).catch(error => {
+        }).catch(err => {
             res.status(500).json({
                 message: 'Fetching posts failed!',
-                error: error.message || error
+                error: err.message || err
             });
         });
 })
@@ -192,11 +192,11 @@ router.delete("/:id", checkAuth, (req, res, next) => {
         } else {
             res.status(401).json({ message: "Not Authorized!" })
         }
-    }).catch(error => {
-        console.error('Error deleting post:', error);
+    }).catch(err => {
+        console.error('Error deleting post:', err);
         res.status(500).json({
             message: 'Deleting post failed!',
-            error: error.message // Send only the error message for security
+            error: err.message // Send only the error message for security
         });
     });
 });

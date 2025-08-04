@@ -7,12 +7,12 @@ const userSchema = new mongoose.Schema({
 });
 
 // Middleware to handle duplicate key errors gracefully
-userSchema.post(['save', 'insertMany', 'updateOne', 'findOneAndUpdate'], function (error, doc, next) {
-    if (error.name === 'MongoServerError' && error.code === 11000) {
-        const field = error?.keyValue ? Object.keys(error.keyValue)[0] : 'Field';
+userSchema.post(['save', 'insertMany', 'updateOne', 'findOneAndUpdate'], function (err, doc, next) {
+    if (err.name === 'MongoServerError' && err.code === 11000) {
+        const field = err?.keyValue ? Object.keys(err.keyValue)[0] : 'Field';
         next(new Error(`${field} must be unique.`));
     } else {
-        next(error);
+        next(err);
     }
 });
 

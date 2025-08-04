@@ -15,13 +15,13 @@ router.post('/signup', async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-        return res.status(400).json({ error: 'Email and password are required' });
+        return res.status(400).json({ message: 'Email and password are required' });
     }
 
     try {
         const unique = await isEmailUnique(email);
         if (!unique) {
-            return res.status(500).json({ error: 'Email already exists' });
+            return res.status(500).json({ message: 'Email already exists' });
         }
 
         const hash = await bcrypt.hash(password, 10);
@@ -37,7 +37,11 @@ router.post('/signup', async (req, res) => {
             }
         });
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        res.status(500).json(
+            {
+                message: 'Invalid Authentication credentials!'
+            }
+        );
     }
 });
 
@@ -71,7 +75,7 @@ router.post("/login", (req, res, next) => {
         })
         .catch(err => {
             return res.status(401).json({
-                message: 'Auth Faild.',
+                message: 'Invalid authentication credentials!',
                 error: err
             })
         })
