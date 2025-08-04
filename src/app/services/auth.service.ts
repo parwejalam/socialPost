@@ -39,6 +39,7 @@ export class AuthService {
                 this.router.navigate(["/"]);
             },
             error: (err) => {
+                this.authStatusLitener.next(false)
                 console.error("Error during signup:", err.error);
                 // Handle error here, e.g., show an error message to the user
             }
@@ -65,6 +66,7 @@ export class AuthService {
                 this.router.navigate(["/"]);
             },
             error: (err) => {
+                this.authStatusLitener.next(false)
                 console.error("Error during login:", err.error);
                 // Handle error here, e.g., show an error message to the user
             }
