@@ -1,4 +1,6 @@
+const mongoose = require('mongoose');
 const Post = require('../models/posts');
+
 
 exports.addPost = (req, res, next) => {
     const url = req.protocol + '://' + req.get("host")
@@ -148,11 +150,11 @@ exports.deletePost = (req, res, next) => {
     }
     //delete the post by ID
     Post.deleteOne({ _id: req.params.id, creator: req.userData.userId }).then(result => {
-        // if (result.deletedCount === 0) {
-        //     return res.status(404).json({ message: 'Post not found' });
-        // }
+        if (result.deletedCount === 0) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
         console.log("Post deleted successfully");
-        if (result.modifiedCount > 0) {
+        if (result.deletedCount > 0) {
             res.status(200).json({
                 message: 'Post deleted successfully!'
             });
