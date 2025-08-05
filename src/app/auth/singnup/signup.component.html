@@ -1,0 +1,26 @@
+@if(isLoading) {
+<app-loader></app-loader>
+} @else {
+<section class="create-post">
+    <h2 class="info-text">Sign Up</h2>
+    <mat-card>
+        <form (ngSubmit)="onSignup(signupForm)" #signupForm="ngForm">
+            <mat-form-field>
+                <mat-label>Email</mat-label>
+                <input matInput name="email" ngModel type="email" placeholder="Enter your email." #emailInput="ngModel" required email/>
+                @if(emailInput.invalid && emailInput.touched){
+                <mat-error>Please add a valid Email.</mat-error>
+                }
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Password</mat-label>
+                <input matInput name="password" ngModel type="password" placeholder="Enter your password." #passwordInput="ngModel" required />
+                @if(passwordInput.invalid && passwordInput.touched){
+                <mat-error>Please add your password.</mat-error>
+                }
+            </mat-form-field>
+            <button mat-raised-button type="submit" [disabled]="signupForm.invalid">Sign Up</button>
+        </form>
+    </mat-card>
+</section>
+}

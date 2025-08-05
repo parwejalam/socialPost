@@ -7,7 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 
-
+import {MatDialogModule} from '@angular/material/dialog';
 
 @NgModule({
   declarations: [],
@@ -18,6 +18,8 @@ import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
     FormsModule,
     MatCardModule,
     MatExpansionModule,
+    MatButtonModule,
+    MatDialogModule
   ],
   exports: [
     CommonModule,
@@ -27,7 +29,8 @@ import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
     MatCardModule,
     MatButtonModule,
     MatExpansionModule,
-    MatAccordion
+    MatAccordion,
+    // MatDialogModule
   ]
 })
 export class MaterialModule { }

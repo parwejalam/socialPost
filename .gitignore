@@ -5,6 +5,7 @@
 /tmp
 /out-tsc
 /bazel-out
+/backend/images
 
 # Node
 /node_modules

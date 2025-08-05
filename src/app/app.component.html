@@ -1,21 +1,7 @@
 <div class="container">
-  <header>
-    <h1>Social Media App</h1>
-    <nav>
-      <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Profile</a></li>
-        <li><a href="#">Messages</a></li>
-        <li><a href="#">Settings</a></li>
-      </ul>
-    </nav>
-  </header>
-
+  <app-header></app-header>
   <main>
-      <h2>Create a Post</h2>
-      <app-post-create (postCreated)="onPostCreated($event)"></app-post-create>
-       <h2>Recent Posts</h2>
-      <app-post-list [postList]="posts"></app-post-list>
+    <router-outlet></router-outlet>
   </main>
 
   <footer>

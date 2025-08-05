@@ -1,27 +1,24 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { PostCreateComponent } from './posts/post-create/post-create.component';
-import { PostListComponent } from "./posts/post-list/post-list.component";
+import { Component, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
+import { RouterModule } from '@angular/router';
+import { HeaderComponent } from "./header/header.component";
+import { AuthService } from './services/auth.service';
 
-interface post {
-  title: string;
-  content?: string;
-  imagePath?: string;
-}
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [PostCreateComponent, PostListComponent, MatCardModule],
+  imports: [MatCardModule, RouterModule, HeaderComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'socialPost';
   year = new Date().getFullYear();
-  posts: post[] = [];
-  onPostCreated(post: post) {
-    this.posts.push(post);
-    console.log(this.posts);
+
+  constructor(private authService: AuthService) { }
+
+
+  ngOnInit() {
+    this.authService.autoAuthUser();
   }
 }

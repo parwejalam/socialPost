@@ -1,24 +1,41 @@
-import { Component, Input, viewChild } from "@angular/core";
+import { Component, Input, OnInit, viewChild } from "@angular/core";
 import { MaterialModule, } from "../../module/material/material.module";
 import { MatAccordion } from "@angular/material/expansion";
+import { PostsService } from "../../services/posts.service";
+import { Post } from "../../model/post.model";
+import { Subscription } from "rxjs";
+import { ActivatedRoute, Params, RouterModule } from "@angular/router";
+import { LoaderComponent } from "../../loader/loader.component";
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { AuthService } from "../../services/auth.service";
 
-interface post {
-    title: string;
-    content?: string;
-    imagePath?: string;
-}
 
 @Component({
     selector: "app-post-list",
     standalone: true,
-    imports: [MaterialModule],
+    imports: [MaterialModule, RouterModule, LoaderComponent, MatPaginatorModule],
     templateUrl: "./post-list.component.html",
     styleUrls: ["./post-list.component.scss"],
 })
-export class PostListComponent {
+export class PostListComponent implements OnInit {
     accordion = viewChild.required(MatAccordion);
     expandAll = false;
+    postList: Post[] = [];
+    private postsSub!: Subscription;
+    userId?: string;
+    isLoading = false;
+    totalPost = 0;
+    postPerPage = 25;
+    currentPage = 1;
+    pageSizeOptions: number[] = [2, 3, 5, 10, 25, 100];
+    isAuthenticated = false;
+    authStatusSub?: Subscription;
 
+    constructor(public postService: PostsService, public route: ActivatedRoute, private authService: AuthService) {
+        // this.isLoading = true;
+        // // this.postService.loadPosts();
+        // this.isLoading = false;
+    }
     openAll() {
         this.accordion().openAll();
         this.expandAll = true;
@@ -28,6 +45,44 @@ export class PostListComponent {
         this.expandAll = false;
     }
 
-    @Input() postList: post[] = [];
+    ngOnInit() {
+        // this.postService.loadPosts();
+        this.postService.getPosts(this.postPerPage, this.currentPage);
+        this.userId = this.authService.getUserId();
+        this.isLoading = true;
+        this.postsSub = this.postService.getPostsUpdatedListener().subscribe((postData: { posts: Post[], postCount: number }) => {
+            this.totalPost = postData.postCount;
+            this.postList = postData.posts;
+        });
+        this.isLoading = false;
+        this.isAuthenticated = this.authService.getIsAuth();
 
+        this.authStatusSub = this.authService.getAuthStatusListener().subscribe((res: boolean) => {
+            this.isAuthenticated = res;
+            this.userId = this.authService.getUserId();
+        });
+    }
+
+    onChangePage(pageData: PageEvent) {
+        this.isLoading = true;
+        this.currentPage = pageData.pageIndex + 1;
+        this.postPerPage = pageData.pageSize;
+        this.postService.getPosts(this.postPerPage, this.currentPage);
+        this.isLoading = false;
+    }
+
+
+    deletPost(postId: string) {
+        this.postService.deletePost(postId).subscribe(() => {
+            this.isLoading = true;
+            this.postService.getPosts(this.postPerPage, this.currentPage);
+            this.isLoading = false;
+
+        })
+    };
+
+    ngOnDestroy() {
+        this.postsSub.unsubscribe()
+        this.authStatusSub?.unsubscribe();
+    }
 }

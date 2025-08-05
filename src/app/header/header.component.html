@@ -1,0 +1,14 @@
+<header>
+    <h1 routerLink="/" routerLinkActive="mat-accent"> Social Media App</h1>
+    <nav>
+        @for (navLink of navLinks; track $index) {
+            @if ((navLink.showWhenAuthenticated && isuserAuthenticated) || (!navLink.showWhenAuthenticated && !isuserAuthenticated)) {
+                <button mat-flat-button [routerLink]="navLink.routeraLink"
+                    routerLinkActive="mat-accent">{{navLink.Label}}</button>
+            }
+        }
+        @if (isuserAuthenticated) {
+            <button mat-flat-button (click)="onLogout()">Log Out</button>
+        }
+    </nav>
+</header>
