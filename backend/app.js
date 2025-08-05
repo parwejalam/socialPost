@@ -21,7 +21,7 @@ mongoose.connect(mongoURL)
 
 app.use(bodyParser.json());
 app.use(cors());
-app.use('/images', express.static(path.join("backend/images")));
+app.use('/images', express.static(path.join("images")));
 app.use('/api/posts', postsRoutes);
 app.use('/api/user', userRoutes);
 
