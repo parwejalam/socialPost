@@ -3,10 +3,11 @@ import { Injectable } from "@angular/core";
 import { AuthUser } from '../model/auth-user.model';
 import { Router } from "@angular/router";
 import { Subject } from "rxjs";
+import { environment } from "../../environments/environment";
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-    private apiUrl = "http://localhost:3000/api/user";
+    private apiUrl = environment.apiUrl +"user";
     private token: string | undefined;
     private tokenTimer: any;
     private userId?: string;

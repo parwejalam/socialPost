@@ -40,7 +40,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   navLinks = [
     { Label: 'Add Post', routeraLink: '/createPost', showWhenAuthenticated: true },
-    { Label: 'Login', routeraLink: '/login', showWhenAuthenticated: false },
-    { Label: 'SignUp', routeraLink: '/signup', showWhenAuthenticated: false },
+    { Label: 'Login', routeraLink: '/auth/login', showWhenAuthenticated: false },
+    { Label: 'SignUp', routeraLink: '/auth/signup', showWhenAuthenticated: false },
   ]
 }
