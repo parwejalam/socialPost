@@ -9,6 +9,5 @@ export const routes: Routes = [
     { path: '', component: PostListComponent },
     { path: 'createPost', component: PostCreateComponent, canActivate: [AuthGuard] },
     { path: 'edit/:postId', component: PostCreateComponent, canActivate: [AuthGuard] },
-    { path: 'login', component: LoginComponent },
-    { path: 'signup', component: SingupComponent }
+    { path: 'auth', loadChildren: () =>import( './module/auth-module/auth.module').then(m => m.AuthModule)}
 ];

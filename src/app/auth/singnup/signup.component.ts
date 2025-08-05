@@ -6,8 +6,8 @@ import { AuthService } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-    standalone: true,
-    imports: [LoaderComponent, MaterialModule],
+    standalone: false,
+    // imports: [LoaderComponent, MaterialModule],
     templateUrl: "./signup.component.html",
     styleUrls: ["./signup.component.scss"],
 })

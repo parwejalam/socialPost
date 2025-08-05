@@ -3,13 +3,14 @@ import { Post } from '../model/post.model';
 import { map, Subject } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
+import { environment } from "../../environments/environment";
 
 
 @Injectable({ providedIn: 'root' })
 export class PostsService {
 
     constructor(private http: HttpClient, private router: Router) { }
-    apiURL = 'http://localhost:3000/api/posts'; // Base URL for the API
+    apiURL = environment.apiUrl+ 'posts'; // Base URL for the API
 
     private posts: Post[] = [];
     private postsUpdated = new Subject<{ posts: Post[], postCount: number }>();
