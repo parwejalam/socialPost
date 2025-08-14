@@ -11,8 +11,8 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
     return next(req).pipe(
         catchError((error: HttpErrorResponse) => {
             let errorMessage = 'An Unknown Error Occured!'
-            if (error.error.message || error.error.error) {
-                errorMessage = error.error.message? error.error.message : error.error.error
+            if (error.message || error.error) {
+                errorMessage = error.message? error.message : error.error
             }
             dialog.open(ErrorComponent, { data: { message: errorMessage } })
             return throwError(() => error)
