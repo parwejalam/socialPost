@@ -132,6 +132,47 @@ export class ThemeService {
         }
     }
 
+    // Update specific color for current theme
+    updateCurrentThemeColor(colorKey: keyof ThemeConfig['colors'], colorValue: string): void {
+        this.themeConfigs[this.currentTheme].colors[colorKey] = colorValue;
+        this.applyTheme();
+    }
+
+    // Get current theme colors
+    getCurrentColors(): ThemeConfig['colors'] {
+        return this.themeConfigs[this.currentTheme].colors;
+    }
+
+    // Reset theme to default colors
+    resetThemeToDefault(theme: Theme): void {
+        const defaultConfigs = {
+            light: {
+                bgStart: '#c7ddeb',
+                bgEnd: '#a0b3c1',
+                text: '#1f2937',
+                textSecondary: '#6b7280',
+                border: '#e5e7eb',
+                card: '#ffffff',
+                hover: '#f3f4f6'
+            },
+            dark: {
+                bgStart: '#394553',
+                bgEnd: '#0d1f31',
+                text: '#f9fafb',
+                textSecondary: '#d1d5db',
+                border: '#374151',
+                card: '#1f2937',
+                hover: '#374151'
+            }
+        };
+
+        this.themeConfigs[theme].colors = defaultConfigs[theme];
+
+        if (theme === this.currentTheme) {
+            this.applyTheme();
+        }
+    }
+
     // Get gradient class for current theme
     getGradientClass(): string {
         return this.currentTheme === 'light' ? 'bg-gradient-light' : 'bg-gradient-dark';
@@ -140,5 +181,16 @@ export class ThemeService {
     // Check if current theme is dark
     isDarkTheme(): boolean {
         return this.currentTheme === 'dark';
+    }
+
+    // Export current theme configuration (for backup/sharing)
+    exportThemeConfig(): Record<Theme, ThemeConfig> {
+        return JSON.parse(JSON.stringify(this.themeConfigs));
+    }
+
+    // Import theme configuration (for restore/sharing)
+    importThemeConfig(configs: Record<Theme, ThemeConfig>): void {
+        this.themeConfigs = configs;
+        this.applyTheme();
     }
 }

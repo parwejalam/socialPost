@@ -7,8 +7,8 @@
     <p class="text-[var(--theme-text-secondary)]">Discover what the community is sharing</p>
   </div>
 
-  <mat-card
-    class="shadow-xl border-0 rounded-xl overflow-hidden bg-[var(--theme-card)] border border-[var(--theme-border)]">
+  <!-- <mat-card
+    class="shadow-xl border-0 rounded-xl overflow-hidden bg-[var(--theme-card)] border border-[var(--theme-border)]"> -->
     <div class="p-6">
       <!-- Expand/Collapse Controls -->
       @if(postList.length > 0) {
@@ -65,13 +65,13 @@
               <button mat-flat-button
                 class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors duration-200">
                 <a [routerLink]="['/edit', post.id]" class="text-white no-underline">
-                  <mat-icon class="mr-2 text-sm">edit</mat-icon>
+                  <!-- <mat-icon class="mr-2 text-sm">edit</mat-icon> -->
                   Edit
                 </a>
               </button>
               <button mat-flat-button (click)="deletPost(post.id)"
                 class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md transition-colors duration-200">
-                <mat-icon class="mr-2 text-sm">delete</mat-icon>
+                <!-- <mat-icon class="mr-2 text-sm">delete</mat-icon> -->
                 Delete
               </button>
             </mat-action-row>
@@ -102,6 +102,6 @@
     </div>
     }
     </div>
-  </mat-card>
+  <!-- </mat-card> -->
 </section>
 }

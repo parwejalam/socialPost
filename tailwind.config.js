@@ -53,6 +53,18 @@ module.exports = {
         'gradient-light': 'linear-gradient(135deg, #c7ddeb 0%, #a0b3c1 100%)',
         'gradient-dark': 'linear-gradient(135deg, #394553 0%, #0d1f31 100%)',
       },
+      // Add support for CSS custom properties
+      textColor: {
+        'theme': 'var(--theme-text)',
+        'theme-secondary': 'var(--theme-text-secondary)',
+      },
+      backgroundColor: {
+        'theme-card': 'var(--theme-card)',
+        'theme-hover': 'var(--theme-hover)',
+      },
+      borderColor: {
+        'theme': 'var(--theme-border)',
+      },
     },
   },
   plugins: [

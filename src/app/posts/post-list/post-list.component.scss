@@ -6,9 +6,3 @@
   // Remove Material's default margins to work better with Tailwind spacing
   margin: 0 !important;
 }
-
-// Ensure links within buttons maintain proper styling
-a.text-white {
-  color: white !important;
-  text-decoration: none !important;
-}

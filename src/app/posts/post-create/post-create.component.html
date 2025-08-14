@@ -8,8 +8,8 @@
   </div>
 
   <mat-card class="shadow-xl border border-[var(--theme-border)] rounded-xl overflow-hidden bg-[var(--theme-card)]">
-    <div class="p-6 sm:p-8">
-      <form [formGroup]="form" (ngSubmit)="onSavePost()" class="space-y-6">
+    <div class="p-6 sm:p-8 bg-[var(--theme-card)]">
+      <form [formGroup]="form" (ngSubmit)="onSavePost()" class="space-y-6 ">
         <!-- Title Field -->
         <div>
           <mat-form-field appearance="fill" class="w-full !mb-0">
@@ -24,7 +24,7 @@
 
         <!-- Image Upload Section -->
         <div class="space-y-4">
-          <label class="block text-sm font-medium text-gray-700 mb-2">
+          <label class="block text-sm font-medium text-[var(--theme-text)] mb-2">
             Post Image
           </label>
           <div class="flex items-center space-x-4">
@@ -37,17 +37,17 @@
           </div>
 
           <!-- Image Preview -->
-          <div class="mt-4 border-2 border-dashed border-gray-300 rounded-xl p-6 bg-gray-50">
+          <div class="mt-4 border-2 border-dashed border-[var(--theme-border)] rounded-xl p-6 bg-[var(--theme-hover)]">
             @if(imagePreview !== '' && imagePreview !== null && form.get('image')?.valid) {
             <div class="text-center">
               <img [src]="imagePreview" alt="Image Preview"
                 class="max-h-64 mx-auto rounded-lg shadow-md object-cover" />
-              <p class="mt-2 text-sm text-gray-600">Image selected successfully</p>
+              <p class="mt-2 text-sm text-[var(--theme-text-secondary)]">Image selected successfully</p>
             </div>
             } @else {
             <div class="text-center py-8" (click)="filePicker.click()">
-              <mat-icon class="text-gray-400  mb-4">image</mat-icon>
-              <p class="text-gray-500">Click "Choose Image" to add a photo to your post</p>
+              <mat-icon class="text-[var(--theme-text-secondary)] mb-4">image</mat-icon>
+              <p class="text-[var(--theme-text-secondary)]">Click "Choose Image" to add a photo to your post</p>
             </div>
             }
           </div>
@@ -56,10 +56,10 @@
         <!-- Content Field -->
         <div>
           <mat-form-field appearance="fill" class="w-full !mb-0">
-            <mat-label>What's on your mind?</mat-label>
+            <mat-label class="text-[var(--theme-text)]">What's on your mind?</mat-label>
             <textarea matInput rows="6" formControlName="content"
               placeholder="Share your thoughts, experiences, or anything interesting..."
-              class="text-base leading-relaxed"></textarea>
+              class="text-base leading-relaxed text-[var(--theme-text)]"></textarea>
             @if(form.get('content')?.invalid){
             <mat-error>Please add some content to your post.</mat-error>
             }
