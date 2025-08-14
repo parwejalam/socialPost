@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
         if (isValid) {
             error = null;
         }
-        cb(error, 'images'); // Store images in the 'backend/images' directory
+        cb(error, 'backend/images'); // Store images in the 'backend/images' directory
     },
     filename: (req, file, cb) => {
         const name = file.originalname.toLowerCase().split(' ').join('-');
