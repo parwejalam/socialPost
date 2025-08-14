@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { ThemeService, Theme } from '../services/theme.service';
 import { Subscription } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,14 +16,25 @@ import { MatIconModule } from '@angular/material/icon';
 export class HeaderComponent implements OnInit, OnDestroy {
   isuserAuthenticated: boolean = false;
   isMobileMenuOpen: boolean = false;
+  currentTheme: Theme = 'light';
   private authListenerSub?: Subscription;
+  private themeSubscription?: Subscription;
 
-  constructor(private authService: AuthService) { }
+  constructor(
+    private authService: AuthService,
+    private themeService: ThemeService
+  ) { }
 
   ngOnInit() {
     this.isuserAuthenticated = this.authService.getIsAuth();
     this.authListenerSub = this.authService.getAuthStatusListener().subscribe(isAuthenticated => {
       this.isuserAuthenticated = isAuthenticated;
+    });
+
+    // Subscribe to theme changes
+    this.currentTheme = this.themeService.getCurrentTheme();
+    this.themeSubscription = this.themeService.getTheme().subscribe(theme => {
+      this.currentTheme = theme;
     });
   }
 
@@ -37,6 +49,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   closeMobileMenu() {
     this.isMobileMenuOpen = false;
+  }
+
+  toggleTheme() {
+    this.themeService.toggleTheme();
   }
 
   getNavIcon(label: string): string {
@@ -54,6 +70,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // Cleanup logic if needed 
     if (this.authListenerSub) {
       this.authListenerSub.unsubscribe();
+    }
+    if (this.themeSubscription) {
+      this.themeSubscription.unsubscribe();
     }
   }
 

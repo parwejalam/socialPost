@@ -3,6 +3,7 @@ module.exports = {
   content: [
     "./src/**/*.{html,ts}",
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
@@ -18,6 +19,39 @@ module.exports = {
           800: '#1e40af',
           900: '#1e3a8a',
         },
+        // Custom theme colors
+        'theme-bg-start': {
+          light: '#c7ddeb',
+          dark: '#394553',
+        },
+        'theme-bg-end': {
+          light: '#a0b3c1',
+          dark: '#0d1f31',
+        },
+        'theme-text': {
+          light: '#1f2937',
+          dark: '#f9fafb',
+        },
+        'theme-text-secondary': {
+          light: '#6b7280',
+          dark: '#d1d5db',
+        },
+        'theme-border': {
+          light: '#e5e7eb',
+          dark: '#374151',
+        },
+        'theme-card': {
+          light: '#ffffff',
+          dark: '#1f2937',
+        },
+        'theme-hover': {
+          light: '#f3f4f6',
+          dark: '#374151',
+        },
+      },
+      backgroundImage: {
+        'gradient-light': 'linear-gradient(135deg, #c7ddeb 0%, #a0b3c1 100%)',
+        'gradient-dark': 'linear-gradient(135deg, #394553 0%, #0d1f31 100%)',
       },
     },
   },

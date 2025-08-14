@@ -1,4 +1,5 @@
-<header class="sticky top-0 z-50 backdrop-blur-lg bg-white/90 border-b border-gray-200/50 shadow-sm">
+<header
+    class="sticky top-0 z-50 backdrop-blur-lg bg-[var(--theme-card)]/90 border-b border-[var(--theme-border)] shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16 lg:h-20">
 
@@ -14,11 +15,11 @@
 
                     <!-- App Name -->
                     <span
-                        class="text-xl lg:text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent group-hover:from-blue-600 group-hover:to-purple-600 transition-all duration-200">
+                        class="text-xl lg:text-2xl font-bold bg-gradient-to-r from-[var(--theme-text)] to-[var(--theme-text-secondary)] bg-clip-text text-transparent group-hover:from-blue-600 group-hover:to-purple-600 transition-all duration-200">
                         SocialPost
                     </span>
                     <div class="hidden sm:block">
-                        <span class="text-xs text-gray-500 font-medium">Connect & Share</span>
+                        <span class="text-xs text-[var(--theme-text-secondary)] font-medium">Connect & Share</span>
                     </div>
                 </div>
             </div>
@@ -28,8 +29,8 @@
                 @if (isuserAuthenticated) {
                 <div class="pt-4 m-4">
                     <div class="mb-4 px-4">
-                        <span class="text-sm me-2 font-medium text-gray-900">Welcome back!</span>
-                        <span class="text-xs text-gray-500">Ready to share something new?</span>
+                        <span class="text-sm me-2 font-medium text-[var(--theme-text)]">Welcome back!</span>
+                        <span class="text-xs text-[var(--theme-text-secondary)]">Ready to share something new?</span>
                     </div>
                 </div>
                 }
@@ -39,7 +40,7 @@
                 !isuserAuthenticated)) {
                 <button mat-flat-button [routerLink]="navLink.routeraLink"
                     routerLinkActive="!bg-blue-500 !text-white shadow-md"
-                    class="text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 border border-transparent hover:border-blue-200">
+                    class="text-[var(--theme-text)] hover:text-blue-600 hover:bg-[var(--theme-hover)] px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 border border-transparent hover:border-blue-200">
                     <mat-icon>{{getNavIcon(navLink.Label)}}</mat-icon>
                     {{navLink.Label}}
                 </button>
@@ -51,18 +52,40 @@
                 <div class="flex items-center space-x-2 ml-4">
                     <button mat-flat-button (click)="onLogout()"
                         class="bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105">
-                        <mat-icon >logout</mat-icon>
+                        <mat-icon>logout</mat-icon>
                         <span class="hidden lg:inline">Log Out</span>
                         <span class="lg:hidden">Log Out</span>
+                    </button>
+                    <!-- Theme Toggle Button -->
+                    <button mat-icon-button (click)="toggleTheme()"
+                        class="text-[var(--theme-text)] hover:text-blue-600 hover:bg-[var(--theme-hover)] rounded-lg transition-all duration-200"
+                        [title]="currentTheme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'">
+                        <mat-icon>{{currentTheme === 'light' ? 'dark_mode' : 'light_mode'}}</mat-icon>
+                    </button>
+
+                </div>
+                } @else {
+                <!-- Theme Toggle Button for non-authenticated users -->
+                <div class="flex items-center space-x-2 ml-4">
+                    <button mat-icon-button (click)="toggleTheme()"
+                        class="text-[var(--theme-text)] hover:text-blue-600 hover:bg-[var(--theme-hover)] rounded-lg transition-all duration-200"
+                        [title]="currentTheme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'">
+                        <mat-icon>{{currentTheme === 'light' ? 'dark_mode' : 'light_mode'}}</mat-icon>
                     </button>
                 </div>
                 }
             </nav>
 
             <!-- Mobile Menu Button -->
-            <div class="md:hidden">
+            <div class="md:hidden flex items-center space-x-2">
+                <!-- Mobile Theme Toggle -->
+                <button mat-icon-button (click)="toggleTheme()"
+                    class="text-[var(--theme-text)] hover:text-blue-600 hover:bg-[var(--theme-hover)] rounded-lg transition-all duration-200">
+                    <mat-icon>{{currentTheme === 'light' ? 'dark_mode' : 'light_mode'}}</mat-icon>
+                </button>
+
                 <button mat-icon-button (click)="toggleMobileMenu()"
-                    class="text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200"
+                    class="text-[var(--theme-text)] hover:text-blue-600 hover:bg-[var(--theme-hover)] rounded-lg transition-all duration-200"
                     [attr.aria-expanded]="isMobileMenuOpen">
                     <mat-icon>{{isMobileMenuOpen ? 'close' : 'menu'}}</mat-icon>
                 </button>
@@ -71,14 +94,15 @@
     </div>
 
     <!-- Mobile Navigation Menu -->
-    <div class="md:hidden border-t border-gray-200/50 backdrop-blur-lg bg-white/95" [class.hidden]="!isMobileMenuOpen">
+    <div class="md:hidden border-t border-[var(--theme-border)] backdrop-blur-lg bg-[var(--theme-card)]/95"
+        [class.hidden]="!isMobileMenuOpen">
         <div class="px-4 py-4 space-y-2">
 
             @if (isuserAuthenticated) {
             <div class="pt-4 mt-4">
                 <div class="mb-4 px-4">
-                    <p class="text-sm font-medium text-gray-900">Welcome back!</p>
-                    <p class="text-xs text-gray-500">Ready to share something new?</p>
+                    <p class="text-sm font-medium text-[var(--theme-text)]">Welcome back!</p>
+                    <p class="text-xs text-[var(--theme-text-secondary)]">Ready to share something new?</p>
                 </div>
             </div>
             }
@@ -88,18 +112,18 @@
             !isuserAuthenticated)) {
             <button mat-flat-button [routerLink]="navLink.routeraLink" routerLinkActive="!bg-blue-500 !text-white"
                 (click)="closeMobileMenu()"
-                class="w-full justify-start text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-4 py-3 rounded-lg text-base font-medium transition-all duration-200">
-                <mat-icon >{{getNavIcon(navLink.Label)}}</mat-icon>
+                class="w-full justify-start text-[var(--theme-text)] hover:text-blue-600 hover:bg-[var(--theme-hover)] px-4 py-3 rounded-lg text-base font-medium transition-all duration-200">
+                <mat-icon>{{getNavIcon(navLink.Label)}}</mat-icon>
                 {{navLink.Label}}
             </button>
             }
             }
 
             @if (isuserAuthenticated) {
-            <div class="pt-4 mt-4 border-t border-gray-200">
+            <div class="pt-4 mt-4 border-t border-[var(--theme-border)]">
                 <button mat-flat-button (click)="onLogout(); closeMobileMenu()"
                     class="w-full justify-start bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-4 py-3 rounded-lg text-base font-medium transition-all duration-200">
-                    <mat-icon >logout</mat-icon>
+                    <mat-icon>logout</mat-icon>
                     Log Out
                 </button>
             </div>

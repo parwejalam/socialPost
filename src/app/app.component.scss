@@ -1,51 +1,28 @@
-html,
-body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
+// Global theme-aware styles
+:host {
+    display: block;
+    min-height: 100vh;
 }
 
-.container {
-    min-height: 100%;
-    display: flex;
-    flex-direction: column;
-    max-width: 100%;
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
+// Ensure smooth transitions for theme changes
+* {
+    transition: background-color 300ms ease-in-out, border-color 300ms ease-in-out, color 300ms ease-in-out;
 }
 
-main {
-    flex: 1;
-    margin-top: 0;
-    background-color: #f9f9f9;
-    padding: 20px;
-    border: 1px solid #ddd;
-    margin-bottom: 0;
-
+// Theme-specific scrollbar styling
+::-webkit-scrollbar {
+    width: 8px;
 }
 
-footer {
-    text-align: center;
-    margin-top: 40px;
-    padding: 20px 0;
-    background-color: #222;
-    color: #fff;
-    border-top: 5px solid #007bff;
-    font-size: 1em;
-    position: sticky;
-    bottom: 0;
+::-webkit-scrollbar-track {
+    background: var(--theme-bg-end);
+}
 
-    p {
-        margin: 0;
+::-webkit-scrollbar-thumb {
+    background: var(--theme-border);
+    border-radius: 4px;
+}
 
-        a {
-            color: #007bff;
-            text-decoration: none;
-
-            &:hover {
-                text-decoration: underline;
-            }
-        }
-    }
+::-webkit-scrollbar-thumb:hover {
+    background: var(--theme-text-secondary);
 }
