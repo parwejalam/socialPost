@@ -3,16 +3,18 @@ import { RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { Subscription } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterModule, MatButtonModule],
+  imports: [RouterModule, MatButtonModule, MatIconModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   isuserAuthenticated: boolean = false;
+  isMobileMenuOpen: boolean = false;
   private authListenerSub?: Subscription;
 
   constructor(private authService: AuthService) { }
@@ -24,11 +26,28 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
   }
 
-
-
   onLogout() {
     this.authService.logOut();
     console.log('User logged out');
+  }
+
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  closeMobileMenu() {
+    this.isMobileMenuOpen = false;
+  }
+
+  getNavIcon(label: string): string {
+    const iconMap: { [key: string]: string } = {
+      'Add Post': 'add_circle',
+      'Login': 'login',
+      'SignUp': 'person_add',
+      'Posts': 'article',
+      'Home': 'home'
+    };
+    return iconMap[label] || 'circle';
   }
 
   ngOnDestroy(): void {
