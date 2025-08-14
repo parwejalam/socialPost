@@ -14,6 +14,7 @@ import { Subscription } from "rxjs";
 
 export class LoginComponent implements OnInit, OnDestroy {
     isLoading = false;
+    hidePassword = true;
     private authStatusSub!: Subscription;
 
 

@@ -1,104 +1,14 @@
-mat-card {
-    width: 80%;
-    margin: auto;
+// All styling handled by Tailwind utility classes
+// No hardcoded CSS needed - this is the beauty of utility-first approach!
 
-    button {
-        width: 20%;
-        margin: 10px;
-        background-color: #ffffff;
-    }
-
-    a {
-        text-decoration: none;
-        color: #007bff;
-    }
+// Only override Material component styles where necessary for better integration
+.mat-expansion-panel {
+  // Remove Material's default margins to work better with Tailwind spacing
+  margin: 0 !important;
 }
 
-
-mat-accordion {
-    width: 80%;
-    margin: auto;
-    margin-bottom: 10px;
-}
-
-mat-paginator{
-    margin-top: 1rem;
-}
-
-.posts {
-    .post {
-        background-color: #fff;
-        padding: 20px;
-        border: 1px solid #ddd;
-        margin-bottom: 20px;
-
-        h3 {
-            margin-top: 0;
-        }
-
-        .actions {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-
-            button {
-                padding: 5px 10px;
-                background-color: #007bff;
-                color: #fff;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-
-                &:hover {
-                    background-color: #0056b3;
-                }
-            }
-        }
-    }
-}
-
-.actions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-
-    button {
-        padding: 5px 10px;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-
-        &:hover {
-            background-color: #0056b3;
-        }
-    }
-}
-
-.info-text {
-    text-align: center;
-    margin-top: 15px;
-}
-
-.post-image {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.post-image img {
-    max-width: 100%;
-    width: 400px;
-    height: auto;
-    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
-    display: block;
-}
-
-@media (max-width: 500px) {
-    .post-image img {
-        width: 100%;
-        max-width: 100%;
-    }
+// Ensure links within buttons maintain proper styling
+a.text-white {
+  color: white !important;
+  text-decoration: none !important;
 }

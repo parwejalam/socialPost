@@ -3,26 +3,41 @@ const Post = require('../models/posts');
 
 
 exports.addPost = (req, res, next) => {
-    const url = req.protocol + '://' + req.get("host")
+    console.log('Request body:', req.body);
+    console.log('Request file:', req.file);
+    console.log('User data:', req.userData);
+
+    // Check if required fields are present
+    if (!req.body.title || !req.body.content) {
+        return res.status(400).json({
+            message: 'Title and content are required!'
+        });
+    }
+
+    const url = req.protocol + '://' + req.get("host");
     const post = new Post({
         title: req.body.title,
         content: req.body.content,
-        imagePath: url + "/images/" + req.file.filename,
+        imagePath: req.file ? url + "/images/" + req.file.filename : null,
         creator: req.userData.userId
     });
+
     post.save().then(createdPost => {
-        res.status(200).json({
+        res.status(201).json({
             message: 'Post added successfully!',
             post: {
-                ...createdPost,
                 id: createdPost._id,
-            },
-        })
+                title: createdPost.title,
+                content: createdPost.content,
+                imagePath: createdPost.imagePath,
+                creator: createdPost.creator
+            }
+        });
     }).catch(err => {
         console.error('Error saving post:', err);
         res.status(500).json({
             message: 'Creating post failed!',
-            error: err.message // Send only the error message for security
+            error: err.message
         });
     });
 }

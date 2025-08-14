@@ -19,7 +19,8 @@ mongoose.connect(mongoURL)
         console.error('MongoDB connection error:', err);
     });
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ extended: false, limit: '50mb' }));
 app.use(cors());
 app.use('/images', express.static(path.join("backend/images")));
 app.use('/api/posts', postsRoutes);

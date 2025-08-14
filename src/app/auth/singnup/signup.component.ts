@@ -14,6 +14,7 @@ import { Subscription } from 'rxjs';
 
 export class SingupComponent implements OnInit, OnDestroy {
     isLoading = false;
+    hidePassword = true;
     private authStatusSub!: Subscription;
 
     constructor(public authService: AuthService) { }

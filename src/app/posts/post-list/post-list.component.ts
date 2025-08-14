@@ -4,7 +4,7 @@ import { MatAccordion } from "@angular/material/expansion";
 import { PostsService } from "../../services/posts.service";
 import { Post } from "../../model/post.model";
 import { Subscription } from "rxjs";
-import { ActivatedRoute, Params, RouterModule } from "@angular/router";
+import { ActivatedRoute, Params, Router, RouterModule } from "@angular/router";
 import { LoaderComponent } from "../../loader/loader.component";
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { AuthService } from "../../services/auth.service";
@@ -31,18 +31,10 @@ export class PostListComponent implements OnInit {
     isAuthenticated = false;
     authStatusSub?: Subscription;
 
-    constructor(public postService: PostsService, public route: ActivatedRoute, private authService: AuthService) {
+    constructor(public postService: PostsService, public route: ActivatedRoute, private authService: AuthService, private router: Router,) {
         // this.isLoading = true;
         // // this.postService.loadPosts();
         // this.isLoading = false;
-    }
-    openAll() {
-        this.accordion().openAll();
-        this.expandAll = true;
-    }
-    closeAll() {
-        this.accordion().closeAll();
-        this.expandAll = false;
     }
 
     ngOnInit() {
@@ -63,12 +55,29 @@ export class PostListComponent implements OnInit {
         });
     }
 
+    openAll() {
+        this.accordion().openAll();
+        this.expandAll = true;
+    }
+    closeAll() {
+        this.accordion().closeAll();
+        this.expandAll = false;
+    }
+
     onChangePage(pageData: PageEvent) {
         this.isLoading = true;
         this.currentPage = pageData.pageIndex + 1;
         this.postPerPage = pageData.pageSize;
         this.postService.getPosts(this.postPerPage, this.currentPage);
         this.isLoading = false;
+    }
+
+    goToCreatePost() {
+        if (this.isAuthenticated === true) {
+            this.router.navigate(['/createPost']);
+        } else {
+            this.router.navigate(['/auth/login']);
+        }
     }
 
 

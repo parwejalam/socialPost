@@ -1,26 +1,100 @@
 @if(isLoading) {
 <app-loader></app-loader>
 } @else {
-<section class="create-post">
-    <h2 class="info-text">Log In</h2>
-    <mat-card>
-        <form (ngSubmit)="onLogin(loginForm)" #loginForm="ngForm">
-            <mat-form-field>
-                <mat-label>Email</mat-label>
-                <input matInput name="email" ngModel type="email" placeholder="Enter your email." #emailInput="ngModel" required email/>
-                @if(emailInput.invalid && emailInput.touched){
-                <mat-error>Please add a valid Email.</mat-error>
-                }
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>Password</mat-label>
-                <input matInput name="password" ngModel type="password" placeholder="Enter your password." #passwordInput="ngModel" required />
-                @if(passwordInput.invalid && passwordInput.touched){
-                <mat-error>Please add your password.</mat-error>
-                }
-            </mat-form-field>
-            <button mat-raised-button type="submit" [disabled]="loginForm.invalid">Log In</button>
-        </form>
-    </mat-card>
+<section class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md mx-auto">
+
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div
+                class="w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                <mat-icon class="text-white text-3xl">login</mat-icon>
+            </div>
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h2>
+            <p class="text-gray-600">Sign in to your account to continue</p>
+        </div>
+
+        <!-- Login Form -->
+        <mat-card class="shadow-2xl border-0 rounded-2xl overflow-hidden backdrop-blur-lg bg-white/80">
+            <div class="p-8">
+                <form (ngSubmit)="onLogin(loginForm)" #loginForm="ngForm" class="space-y-6">
+
+                    <!-- Email Field -->
+                    <div>
+                        <mat-form-field appearance="fill" class="w-full !mb-0">
+                            <mat-label>Email Address</mat-label>
+                            <input matInput name="email" ngModel type="email" placeholder="your@email.com"
+                                #emailInput="ngModel" required email class="text-base">
+                            <mat-icon matPrefix class="mr-2 text-gray-400">email</mat-icon>
+                            @if(emailInput.invalid && emailInput.touched) {
+                            <mat-error>Please enter a valid email address</mat-error>
+                            }
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div>
+                        <mat-form-field appearance="fill" class="w-full !mb-0">
+                            <mat-label>Password</mat-label>
+                            <input matInput name="password" ngModel [type]="hidePassword ? 'password' : 'text'"
+                                placeholder="Enter your password" #passwordInput="ngModel" required class="text-base">
+                            <mat-icon matPrefix class="mr-2 text-gray-400">lock</mat-icon>
+                            <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword"
+                                class="text-gray-400 hover:text-gray-600">
+                                <mat-icon>{{hidePassword ? 'visibility' : 'visibility_off'}}</mat-icon>
+                            </button>
+                            @if(passwordInput.invalid && passwordInput.touched) {
+                            <mat-error>Password is required</mat-error>
+                            }
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Remember Me & Forgot Password -->
+                    <div class="flex items-center justify-between text-sm">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="checkbox"
+                                class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <span class="ml-2 text-gray-600">Remember me</span>
+                        </label>
+                        <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Forgot password?</a>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button mat-flat-button type="submit" [disabled]="loginForm.invalid"
+                        class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-3 rounded-xl text-lg font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:scale-[1.02]">
+                        <mat-icon class="mr-2">login</mat-icon>
+                        Sign In
+                    </button>
+
+                    <!-- Divider -->
+                    <div class="relative my-6">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-gray-300"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-2 bg-white text-gray-500">Don't have an account?</span>
+                        </div>
+                    </div>
+
+                    <!-- Sign Up Link -->
+                    <button mat-flat-button type="button" routerLink="/auth/signup"
+                        class="w-full border-2 border-gray-300 hover:border-blue-400 text-gray-700 hover:text-blue-600 py-3 rounded-xl text-lg font-semibold transition-all duration-200 hover:bg-blue-50">
+                        <mat-icon class="mr-2">person_add</mat-icon>
+                        Create New Account
+                    </button>
+                </form>
+            </div>
+        </mat-card>
+
+        <!-- Footer -->
+        <div class="text-center mt-8">
+            <p class="text-sm text-gray-500">
+                By signing in, you agree to our
+                <a href="#" class="text-blue-600 hover:text-blue-800">Terms of Service</a>
+                and
+                <a href="#" class="text-blue-600 hover:text-blue-800">Privacy Policy</a>
+            </p>
+        </div>
+    </div>
 </section>
 }
