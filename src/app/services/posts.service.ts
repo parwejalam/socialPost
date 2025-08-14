@@ -43,27 +43,35 @@ export class PostsService {
 
     // Method to add a new post to the server and update the local posts array
     addPost(post: Post, image: File) {
-        const postData = new FormData();
+        const postData: FormData = new FormData();
         postData.append("title", post.title);
         postData.append("content", post.content || '');
-        postData.append("image", image as File, post.title); // Ensure post.image is a File type
+        if (image) {
+            postData.append("image", image, post.title);
+        }
 
         this.http.post<{ message: string, post: any }>(this.apiURL, postData)
-            .subscribe((response) => {
-                const newPost = {
-                    id: response.post._doc._id,
-                    title: response.post._doc.title,
-                    content: response.post._doc.content || '',
-                    imagePath: response.post._doc.imagePath ? response.post._doc.imagePath : '',
-                    creator: response.post._doc.creator
-                };
-                this.posts.push(newPost);
-                this.postsUpdated.next({
-                    posts: [...this.posts],
-                    postCount: this.posts.length
-                });
-                console.log('Post added successfully db res:', newPost);
-                this.router.navigate(["/"]);
+            .subscribe({
+                next: (response) => {
+                    console.log('Post added successfully:', response);
+                    const newPost = {
+                        id: response.post.id,
+                        title: response.post.title,
+                        content: response.post.content || '',
+                        imagePath: response.post.imagePath || '',
+                        creator: response.post.creator
+                    };
+                    this.posts.push(newPost);
+                    this.postsUpdated.next({
+                        posts: [...this.posts],
+                        postCount: this.posts.length
+                    });
+                    this.router.navigate(["/"]);
+                },
+                error: (error) => {
+                    console.error('Error adding post:', error);
+                    // Handle error appropriately - you might want to show a user-friendly message
+                }
             });
     }
 

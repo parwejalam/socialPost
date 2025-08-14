@@ -35,7 +35,7 @@ export class PostCreateComponent implements OnInit, OnDestroy{
         this.form = new FormGroup({
             title: new FormControl(null, { validators: [Validators.required, Validators.minLength(3)] }),
             content: new FormControl(null, { validators: [Validators.required] }),
-            image: new FormControl(null, { validators: [Validators.required], asyncValidators: [mimeType] })
+            image: new FormControl(null, { asyncValidators: [mimeType] }) // Remove required validator for image
         });
         this.route.paramMap.subscribe((param: ParamMap) => {
             if (param.has('postId')) {
@@ -77,26 +77,32 @@ export class PostCreateComponent implements OnInit, OnDestroy{
 
     onSavePost() {
         if (this.form.invalid) {
+            console.log('Form is invalid:', this.form.errors);
             return;
         }
+        
+        // Check if user is authenticated
+        if (!this.authService.getIsAuth()) {
+            console.error('User is not authenticated');
+            this.router.navigate(['/auth/login']);
+            return;
+        }
+
         const post: Post = {
             id: '',
             title: this.form.value.title,
             content: this.form.value.content,
-            imagePath: this.form.value.imagePath,
-            creator: null as any // Creator will be set by the service
+            imagePath: '',
+            creator: null as any
         };
+        
         this.isLoading = true;
         if (this.mode == 'create') {
             this.postService.addPost(post, this.form.value.image);
-            this.isLoading = false;
         } else if (this.postId) {
-            this.isLoading = true;
             this.postService.updatePost(this.postId, post, this.form.value.image);
-            this.isLoading = false;
         }
-        this.form.reset()
-        this.router.navigate(['/']);
+        this.form.reset();
     }
 
     ngOnDestroy(): void {
