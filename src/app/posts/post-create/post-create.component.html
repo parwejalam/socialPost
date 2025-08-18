@@ -13,9 +13,9 @@
         <!-- Title Field -->
         <div>
           <mat-form-field appearance="fill" class="w-full !mb-0">
-            <mat-label class="text-[var(--theme-text)]">Post Title</mat-label>
+            <mat-label>Post Title</mat-label>
             <input matInput type="text" formControlName="title" placeholder="Enter an engaging title"
-              class="text-base text-[var(--theme-text)]" />
+              class="text-base " />
             @if(form.get('title')?.invalid){
             <mat-error>Please add a title for your post.</mat-error>
             }
@@ -56,7 +56,7 @@
         <!-- Content Field -->
         <div>
           <mat-form-field appearance="fill" class="w-full !mb-0">
-            <mat-label class="text-[var(--theme-text)]">What's on your mind?</mat-label>
+            <mat-label>What's on your mind?</mat-label>
             <textarea matInput rows="6" formControlName="content"
               placeholder="Share your thoughts, experiences, or anything interesting..."
               class="text-base leading-relaxed text-[var(--theme-text)]"></textarea>
