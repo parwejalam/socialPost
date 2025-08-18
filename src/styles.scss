@@ -4,5 +4,87 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* Global theme variables and base styles */
+@layer base {
+    :root {
+        /* Default light theme */
+        --theme-bg-start: #c7ddeb;
+        --theme-bg-end: #a0b3c1;
+        --theme-text: #1f2937;
+        --theme-text-secondary: #6b7280;
+        --theme-border: #e5e7eb;
+        --theme-card: #ffffff;
+        --theme-hover: #f3f4f6;
+    }
+
+    .dark {
+        /* Dark theme overrides */
+        --theme-bg-start: #394553;
+        --theme-bg-end: #0d1f31;
+        --theme-text: #f9fafb;
+        --theme-text-secondary: #d1d5db;
+        --theme-border: #374151;
+        --theme-card: #1f2937;
+        --theme-hover: #374151;
+    }
+
+    html,
+    body {
+        height: 100%;
+        transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
+    }
+
+    body {
+        margin: 0;
+        font-family: Roboto, "Helvetica Neue", sans-serif;
+        background: linear-gradient(135deg, var(--theme-bg-start) 0%, var(--theme-bg-end) 100%);
+        color: var(--theme-text);
+    }
+}
+
+/* Material UI component theming */
+@layer components {
+    .mat-mdc-card {
+        background-color: var(--theme-card) !important;
+        color: var(--theme-text) !important;
+        border: 1px solid var(--theme-border) !important;
+    }
+
+    .mat-mdc-form-field {
+        .mat-mdc-form-field-focus-overlay {
+            background-color: var(--theme-hover) !important;
+        }
+
+        .mdc-text-field--filled {
+            background-color: var(--theme-hover) !important;
+        }
+
+        .mat-mdc-form-field-label {
+            color: var(--theme-text-secondary) !important;
+        }
+
+        .mat-mdc-input-element {
+            color: var(--theme-text) !important;
+        }
+    }
+
+    .mat-expansion-panel {
+        background-color: var(--theme-card) !important;
+        color: var(--theme-text) !important;
+        border: 1px solid var(--theme-border) !important;
+    }
+
+    .mat-expansion-panel-header {
+        color: var(--theme-text) !important;
+    }
+
+    .mat-paginator {
+        background-color: var(--theme-hover) !important;
+        color: var(--theme-text) !important;
+        border: 1px solid var(--theme-border) !important;
+    }
+
+    .mat-mdc-icon-button {
+        color: var(--theme-text) !important;
+    }
+}

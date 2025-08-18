@@ -1,10 +1,15 @@
-<div class="container">
+<div
+  class="min-h-screen bg-gradient-to-br from-[var(--theme-bg-start)] to-[var(--theme-bg-end)] transition-all duration-300">
   <app-header></app-header>
-  <main>
+  <main class="flex-1 p-4 md:p-6 lg:p-8">
     <router-outlet></router-outlet>
   </main>
 
-  <footer>
-    <p>&copy; {{year}} Social Media App</p>
+  <footer class="border-t border-[var(--theme-border)] bg-[var(--theme-card)]/90 backdrop-blur-sm">
+    <div class="max-w-7xl mx-auto px-4 py-6 text-center">
+      <p class="text-[var(--theme-text-secondary)] text-sm">
+        &copy; {{year}} Social Media App. Built with ❤️
+      </p>
+    </div>
   </footer>
 </div>
